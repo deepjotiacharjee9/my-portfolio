@@ -53,10 +53,10 @@ export default function ProjectCard({ project, onClick, index }: Props) {
           </motion.div>
         </div>
 
-        {/* Category badge */}
+        {/* Format badge */}
         <div className="absolute top-3 left-3 px-2 py-1 bg-black/65 backdrop-blur-sm">
           <span className="text-[10px] text-[#C8A96E] tracking-[0.2em] uppercase font-medium">
-            {project.category}
+            {project.format === 'short-form' ? 'Short Form' : 'Long Form'}
           </span>
         </div>
 

@@ -22,12 +22,13 @@ const showreel: Project = {
   title:       'Showreel 2024',
   client:      'Deepjoti Acharjee',
   year:        2024,
-  category:    'Showreel',
+  era:         'recent',
+  format:      'long-form',
   thumbnail:   '',
   videoType:   'drive',
   videoId:     SHOWREEL_ID,
-  description: 'A curated selection of documentary and long-form work.',
-  tags:        ['Documentary', 'Long-form', 'Color Grade'],
+  description: 'A curated selection of my best work — short form and long form.',
+  tags:        ['Showreel', 'Short Form', 'Long Form'],
   featured:    true,
 }
 
