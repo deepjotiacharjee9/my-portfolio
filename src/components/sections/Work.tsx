@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import ProjectCard from '../ui/ProjectCard'
 import VideoModal from '../ui/VideoModal'
 import SectionLabel from '../ui/SectionLabel'
-import { projects } from '../../data/projects'
+import { useProjects } from '../../hooks/useProjects'
 import type { Project } from '../../types'
 
 function FormatSubSection({
@@ -48,14 +48,16 @@ function EraSection({
   eraLabel,
   sectionNumber,
   eraKey,
+  allProjects,
   onSelect,
 }: {
   eraLabel: string
   sectionNumber: string
   eraKey: 'recent' | 'old'
+  allProjects: Project[]
   onSelect: (p: Project) => void
 }) {
-  const eraProjects = projects.filter((p) => p.era === eraKey)
+  const eraProjects = allProjects.filter((p) => p.era === eraKey)
   const shortForm   = eraProjects.filter((p) => p.format === 'short-form')
   const longForm    = eraProjects.filter((p) => p.format === 'long-form')
 
@@ -101,6 +103,7 @@ function EraSection({
 
 export default function Work() {
   const [selected, setSelected] = useState<Project | null>(null)
+  const { projects } = useProjects()
 
   return (
     <>
@@ -115,6 +118,7 @@ export default function Work() {
             eraLabel="Recent Works"
             sectionNumber="02"
             eraKey="recent"
+            allProjects={projects}
             onSelect={setSelected}
           />
         </motion.div>
@@ -129,6 +133,7 @@ export default function Work() {
             eraLabel="Old Videos"
             sectionNumber="03"
             eraKey="old"
+            allProjects={projects}
             onSelect={setSelected}
           />
         </motion.div>

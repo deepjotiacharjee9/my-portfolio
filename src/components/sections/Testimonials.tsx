@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion'
 import { Quote } from 'lucide-react'
 import SectionLabel from '../ui/SectionLabel'
-import { testimonials } from '../../data/projects'
+import { useTestimonials } from '../../hooks/useProjects'
 
 export default function Testimonials() {
+  const { testimonials } = useTestimonials()
   return (
     <section className="py-24 px-6 border-t border-[#1A1A1A]">
       <div className="max-w-6xl mx-auto">

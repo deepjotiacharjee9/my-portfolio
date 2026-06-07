@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X } from 'lucide-react'
+import { X, AlertTriangle, ExternalLink } from 'lucide-react'
 import type { Project } from '../../types'
 
 interface Props {
@@ -15,9 +15,16 @@ function embedUrl(p: Project) {
   return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&modestbranding=1`
 }
 
+function driveDirectUrl(videoId: string) {
+  return `https://drive.google.com/file/d/${videoId}/view`
+}
+
 export default function VideoModal({ project, onClose }: Props) {
+  const [loadError, setLoadError] = useState(false)
+
   useEffect(() => {
     if (!project) return
+    setLoadError(false)
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
@@ -58,15 +65,56 @@ export default function VideoModal({ project, onClose }: Props) {
             </button>
 
             {/* 16:9 video */}
-            <div className="aspect-video w-full bg-[#141414] border border-[#252525]">
-              <iframe
-                key={project.videoId}
-                src={embedUrl(project)}
-                className="w-full h-full"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                title={project.title}
-              />
+            <div className="aspect-video w-full bg-[#141414] border border-[#252525] relative">
+              {loadError ? (
+                /* ── Drive sharing error state ── */
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-8 text-center">
+                  <AlertTriangle size={28} className="text-[#C8A96E]/60" />
+                  <div>
+                    <p className="text-[#F0EDE8] text-sm font-medium mb-1">Video couldn't load</p>
+                    <p className="text-[#555555] text-xs leading-relaxed max-w-sm">
+                      {project.videoType === 'drive'
+                        ? 'Make sure the Google Drive file is shared as "Anyone with the link can view".'
+                        : 'The video could not be embedded. It may be private or have embedding disabled.'}
+                    </p>
+                  </div>
+                  {project.videoType === 'drive' && (
+                    <a
+                      href={driveDirectUrl(project.videoId)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-hover
+                      className="flex items-center gap-1.5 px-4 py-2 border border-[#C8A96E]/30 text-[#C8A96E] text-xs hover:bg-[#C8A96E]/10 transition-colors"
+                    >
+                      Open in Google Drive <ExternalLink size={11} />
+                    </a>
+                  )}
+                </div>
+              ) : (
+                <iframe
+                  key={project.videoId}
+                  src={embedUrl(project)}
+                  className="w-full h-full"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title={project.title}
+                  onError={() => setLoadError(true)}
+                  // Detect Google's "unable to open" error page via load event
+                  onLoad={(e) => {
+                    try {
+                      const frame = e.target as HTMLIFrameElement
+                      // If Drive blocks the embed it redirects to accounts.google.com or shows an error
+                      // We can't read cross-origin content, but we can detect a suspiciously short load
+                      if (project.videoType === 'drive') {
+                        const url = frame.contentWindow?.location?.href
+                        if (url && !url.includes('drive.google.com')) setLoadError(true)
+                      }
+                    } catch {
+                      // Cross-origin — can't inspect, assume it loaded fine
+                    }
+                  }}
+                />
+              )}
             </div>
 
             {/* Meta row */}
