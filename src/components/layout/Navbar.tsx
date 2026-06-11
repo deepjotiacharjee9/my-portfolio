@@ -3,9 +3,8 @@ import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Work',    href: '#work' },
-  { label: 'About',   href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Work',  href: '#work'  },
+  { label: 'About', href: '#about' },
 ]
 
 export default function Navbar() {
@@ -53,12 +52,6 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#contact"
-            className="px-4 py-2 text-[13px] border border-[rgba(96,165,250,0.22)] text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-all duration-200 tracking-wide"
-          >
-            Hire Me
-          </a>
         </div>
 
         {/* Mobile menu toggle */}
@@ -89,13 +82,6 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#contact"
-            onClick={() => setMenuOpen(false)}
-            className="self-start px-5 py-2.5 border border-[rgba(96,165,250,0.22)] text-sm text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-all duration-200"
-          >
-            Hire Me
-          </a>
         </motion.div>
       )}
     </>
