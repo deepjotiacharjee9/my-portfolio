@@ -33,7 +33,7 @@ export default function About() {
                      className="w-full h-full object-cover" />
             */}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-8">
-              <span className="text-[rgba(148,163,184,0.30)] text-[11px] tracking-[0.2em] uppercase">
+              <span className="text-[rgba(148,163,184,0.55)] text-[11px] tracking-[0.2em] uppercase">
                 Add your photo here
               </span>
               <span style={{ color: 'rgba(96,165,250,0.08)' }} className="text-xs">
@@ -70,7 +70,7 @@ export default function About() {
             <span style={{ color: 'rgba(96,165,250,0.12)' }}>Behind the Story</span>
           </h2>
 
-          <div className="space-y-4 text-[rgba(148,163,184,0.68)] leading-relaxed text-[15px]">
+          <div className="space-y-4 text-[rgba(148,163,184,0.85)] leading-relaxed text-[15px]">
             <p>
               I'm Deepjoti Acharjee — a documentary and long-form video editor
               with a deep belief that every frame should serve the story.
@@ -98,7 +98,7 @@ export default function About() {
               >
                 <Icon size={16} className="text-[#60A5FA] mb-3" />
                 <div className="text-sm font-medium text-[rgba(226,232,240,0.88)]">{label}</div>
-                <div className="text-xs text-[rgba(148,163,184,0.55)] mt-1">{tools}</div>
+                <div className="text-xs text-[rgba(148,163,184,0.75)] mt-1">{tools}</div>
               </div>
             ))}
           </div>

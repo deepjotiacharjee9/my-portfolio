@@ -27,7 +27,7 @@ function FormatSubSection({
           {title}
         </span>
         <span className="flex-1 h-px bg-[rgba(96,165,250,0.10)]" />
-        <span className="text-[11px] text-[rgba(148,163,184,0.40)] tabular-nums">{items.length} videos</span>
+        <span className="text-[11px] text-[rgba(148,163,184,0.65)] tabular-nums">{items.length} videos</span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -90,7 +90,7 @@ function EraSection({
         />
 
         {eraProjects.length === 0 && (
-          <p className="mt-10 text-[rgba(148,163,184,0.40)] text-sm">
+          <p className="mt-10 text-[rgba(148,163,184,0.65)] text-sm">
             No projects yet. Add them in{' '}
             <code className="text-[#60A5FA]">src/data/projects.ts</code>{' '}
             with <code className="text-[#60A5FA]">era: '{eraKey}'</code>

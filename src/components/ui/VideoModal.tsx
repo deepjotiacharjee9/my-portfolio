@@ -59,7 +59,7 @@ export default function VideoModal({ project, onClose }: Props) {
             <button
               onClick={onClose}
               data-hover
-              className="absolute -top-9 right-0 flex items-center gap-1.5 text-xs text-[rgba(148,163,184,0.60)] hover:text-white transition-colors duration-200"
+              className="absolute -top-9 right-0 flex items-center gap-1.5 text-xs text-[rgba(148,163,184,0.78)] hover:text-white transition-colors duration-200"
             >
               <X size={14} /> Close
             </button>
@@ -71,7 +71,7 @@ export default function VideoModal({ project, onClose }: Props) {
                   <AlertTriangle size={28} className="text-[#60A5FA]/60" />
                   <div>
                     <p className="text-[#F8FAFC] text-sm font-medium mb-1">Video couldn't load</p>
-                    <p className="text-[rgba(148,163,184,0.65)] text-xs leading-relaxed max-w-sm">
+                    <p className="text-[rgba(148,163,184,0.82)] text-xs leading-relaxed max-w-sm">
                       {project.videoType === 'drive'
                         ? 'Make sure the Google Drive file is shared as "Anyone with the link can view".'
                         : 'The video could not be embedded. It may be private or have embedding disabled.'}
@@ -119,13 +119,13 @@ export default function VideoModal({ project, onClose }: Props) {
                 <h3 className="font-display font-semibold text-base text-[#F8FAFC]">
                   {project.title}
                 </h3>
-                <p className="text-sm text-[rgba(148,163,184,0.68)] mt-1 max-w-xl leading-relaxed">
+                <p className="text-sm text-[rgba(148,163,184,0.85)] mt-1 max-w-xl leading-relaxed">
                   {project.description}
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5 shrink-0">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-1 text-[11px] border border-[rgba(96,165,250,0.15)] text-[rgba(148,163,184,0.60)] tracking-wide">
+                  <span key={tag} className="px-2 py-1 text-[11px] border border-[rgba(96,165,250,0.20)] text-[rgba(148,163,184,0.78)] tracking-wide">
                     {tag}
                   </span>
                 ))}

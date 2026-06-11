@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Play } from 'lucide-react'
 import VideoModal from '../ui/VideoModal'
+import ToolkitStrip from '../ui/ToolkitStrip'
 import type { Project } from '../../types'
 
 /**
@@ -32,12 +33,6 @@ const showreel: Project = {
   featured:    true,
 }
 
-const TICKER = [
-  'PREMIERE PRO', 'AFTER EFFECTS', 'DAVINCI RESOLVE',
-  'STORYTELLING',  'COLOR GRADING',  'SOUND DESIGN',
-  'DOCUMENTARY',   'LONG-FORM',      'PODCAST EDITING',
-  'MOTION GRAPHICS',
-]
 
 const container = {
   hidden: {},
@@ -154,7 +149,7 @@ export default function Hero() {
                     <div className="w-[60px] h-[60px] rounded-full border border-white/15 flex items-center justify-center group-hover:border-[rgba(96,165,250,0.40)] group-hover:bg-[rgba(59,130,246,0.08)] transition-all duration-400">
                       <Play size={22} fill="#FFFFFF" strokeWidth={0} className="ml-1" />
                     </div>
-                    <span className="text-[11px] text-[rgba(148,163,184,0.60)] tracking-[0.25em] uppercase group-hover:text-[#60A5FA] transition-colors duration-300">
+                    <span className="text-[11px] text-[rgba(148,163,184,0.82)] tracking-[0.25em] uppercase group-hover:text-[#60A5FA] transition-colors duration-300">
                       Play Showreel
                     </span>
                   </div>
@@ -165,10 +160,10 @@ export default function Hero() {
                 </div>
 
                 <div className="mt-2.5 flex items-center justify-between">
-                  <span className="text-[11px] text-[rgba(148,163,184,0.35)] tracking-[0.2em] uppercase">
+                  <span className="text-[11px] text-[rgba(148,163,184,0.65)] tracking-[0.2em] uppercase">
                     Showreel 2024
                   </span>
-                  <span className="text-[11px] text-[rgba(148,163,184,0.30)]">
+                  <span className="text-[11px] text-[rgba(148,163,184,0.55)]">
                     Replace with your Drive ID ↑
                   </span>
                 </div>
@@ -177,17 +172,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── Marquee ticker ── */}
-        <div className="border-t border-[rgba(96,165,250,0.08)] py-4 overflow-hidden mt-10">
-          <div className="flex whitespace-nowrap animate-marquee no-select">
-            {[...TICKER, ...TICKER].map((t, i) => (
-              <span key={i} className="mx-5 text-[11px] text-[rgba(148,163,184,0.35)] tracking-[0.3em] uppercase">
-                {t}
-                <span className="text-[rgba(96,165,250,0.30)] mx-4">·</span>
-              </span>
-            ))}
-          </div>
-        </div>
+        <ToolkitStrip />
       </section>
 
       <VideoModal project={open ? showreel : null} onClose={() => setOpen(false)} />

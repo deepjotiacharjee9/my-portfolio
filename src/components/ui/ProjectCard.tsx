@@ -63,8 +63,8 @@ export default function ProjectCard({ project, onClick, index }: Props) {
         {/* Duration badge */}
         {project.duration && (
           <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-1 bg-black/65 backdrop-blur-sm">
-            <Clock size={9} className="text-[rgba(148,163,184,0.60)]" />
-            <span className="text-[10px] text-[rgba(148,163,184,0.60)]">{project.duration}</span>
+            <Clock size={9} className="text-[rgba(148,163,184,0.78)]" />
+            <span className="text-[10px] text-[rgba(148,163,184,0.78)]">{project.duration}</span>
           </div>
         )}
       </div>
@@ -75,9 +75,9 @@ export default function ProjectCard({ project, onClick, index }: Props) {
           <h3 className="font-display font-semibold text-[rgba(248,250,252,0.95)] group-hover:text-[#60A5FA] transition-colors duration-200 leading-snug truncate">
             {project.title}
           </h3>
-          <p className="text-xs text-[rgba(148,163,184,0.65)] mt-0.5 truncate">{project.client}</p>
+          <p className="text-xs text-[rgba(148,163,184,0.82)] mt-0.5 truncate">{project.client}</p>
         </div>
-        <span className="text-xs text-[rgba(148,163,184,0.40)] tabular-nums shrink-0 mt-0.5">{project.year}</span>
+        <span className="text-xs text-[rgba(148,163,184,0.65)] tabular-nums shrink-0 mt-0.5">{project.year}</span>
       </div>
     </motion.article>
   )

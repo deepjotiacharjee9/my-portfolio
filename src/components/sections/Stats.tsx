@@ -61,8 +61,8 @@ function StatItem({ value, suffix, label, sub, index }: (typeof STATS)[0] & { in
         </span>
         <span className="text-[#60A5FA]">{suffix}</span>
       </div>
-      <div className="mt-2.5 text-sm font-medium text-[rgba(148,163,184,0.68)]">{label}</div>
-      <div className="mt-1 text-xs text-[rgba(148,163,184,0.50)]">{sub}</div>
+      <div className="mt-2.5 text-sm font-medium text-[rgba(148,163,184,0.85)]">{label}</div>
+      <div className="mt-1 text-xs text-[rgba(148,163,184,0.72)]">{sub}</div>
     </motion.div>
   )
 }
