@@ -1,4 +1,5 @@
 import { ICON_BODIES } from '../../data/toolIcons'
+import type { IconData } from '../../data/toolIcons'
 
 interface Tool {
   name:  string
@@ -22,15 +23,15 @@ const TOOLS: Tool[] = [
 ]
 
 function BrandIcon({ icon, color }: { icon: Tool['icon']; color?: string }) {
-  const body = ICON_BODIES[icon]
-  if (!body) return null
+  const data: IconData | undefined = ICON_BODIES[icon]
+  if (!data) return null
   return (
     <svg
       width={15}
       height={15}
-      viewBox="0 0 24 24"
+      viewBox={`0 0 ${data.w} ${data.h}`}
       style={{ color: color ?? 'currentColor', flexShrink: 0 }}
-      dangerouslySetInnerHTML={{ __html: body }}
+      dangerouslySetInnerHTML={{ __html: data.body }}
     />
   )
 }
