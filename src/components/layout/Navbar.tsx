@@ -18,7 +18,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close mobile menu on resize
   useEffect(() => {
     const onResize = () => { if (window.innerWidth >= 768) setMenuOpen(false) }
     window.addEventListener('resize', onResize)
@@ -32,13 +31,13 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between transition-all duration-500 ${
-          scrolled ? 'bg-[#0C0C0C]/85 backdrop-blur-xl border-b border-[#1C1C1C]' : ''
+          scrolled ? 'bg-[#03080F]/90 backdrop-blur-xl border-b border-[rgba(96,165,250,0.12)]' : ''
         }`}
       >
         {/* Logo / Name */}
         <a
           href="#hero"
-          className="font-display font-semibold text-[13px] tracking-[0.15em] text-[#F0EDE8] uppercase hover:text-[#C8A96E] transition-colors duration-200"
+          className="font-display font-semibold text-[13px] tracking-[0.15em] text-white uppercase hover:text-[#60A5FA] transition-colors duration-200"
         >
           Deepjoti Acharjee
         </a>
@@ -49,14 +48,14 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              className="text-[13px] text-[#555555] hover:text-[#F0EDE8] transition-colors duration-200 tracking-wide"
+              className="text-[13px] text-[rgba(203,213,225,0.75)] hover:text-white transition-colors duration-200 tracking-wide"
             >
               {link.label}
             </a>
           ))}
           <a
             href="#contact"
-            className="px-4 py-2 text-[13px] border border-[#2A2A2A] text-[#F0EDE8] hover:border-[#C8A96E] hover:text-[#C8A96E] transition-all duration-200 tracking-wide"
+            className="px-4 py-2 text-[13px] border border-[rgba(96,165,250,0.22)] text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-all duration-200 tracking-wide"
           >
             Hire Me
           </a>
@@ -64,7 +63,7 @@ export default function Navbar() {
 
         {/* Mobile menu toggle */}
         <button
-          className="md:hidden text-[#F0EDE8] hover:text-[#C8A96E] transition-colors duration-200"
+          className="md:hidden text-white hover:text-[#60A5FA] transition-colors duration-200"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label="Toggle menu"
         >
@@ -78,14 +77,14 @@ export default function Navbar() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="fixed inset-x-0 top-[60px] z-40 bg-[#0C0C0C]/95 backdrop-blur-xl border-b border-[#1C1C1C] px-6 py-6 flex flex-col gap-5 md:hidden"
+          className="fixed inset-x-0 top-[60px] z-40 bg-[#03080F]/95 backdrop-blur-xl border-b border-[rgba(96,165,250,0.12)] px-6 py-6 flex flex-col gap-5 md:hidden"
         >
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="text-base text-[#888888] hover:text-[#F0EDE8] transition-colors duration-200"
+              className="text-base text-[rgba(203,213,225,0.75)] hover:text-white transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -93,7 +92,7 @@ export default function Navbar() {
           <a
             href="#contact"
             onClick={() => setMenuOpen(false)}
-            className="self-start px-5 py-2.5 border border-[#2A2A2A] text-sm text-[#F0EDE8] hover:border-[#C8A96E] hover:text-[#C8A96E] transition-all duration-200"
+            className="self-start px-5 py-2.5 border border-[rgba(96,165,250,0.22)] text-sm text-white hover:border-[#60A5FA] hover:text-[#60A5FA] transition-all duration-200"
           >
             Hire Me
           </a>

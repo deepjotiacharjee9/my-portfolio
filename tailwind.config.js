@@ -7,14 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'da-bg':      '#0C0C0C',
-        'da-surface': '#141414',
-        'da-card':    '#181818',
-        'da-border':  '#252525',
-        'da-text':    '#F0EDE8',
-        'da-muted':   '#666666',
-        'da-dim':     '#383838',
-        'da-accent':  '#C8A96E',
+        'da-bg':      '#03080F',
+        'da-surface': '#060E1A',
+        'da-card':    '#071020',
+        'da-border':  'rgba(96,165,250,0.12)',
+        'da-text':    '#F8FAFC',
+        'da-muted':   'rgba(148,163,184,0.68)',
+        'da-dim':     'rgba(148,163,184,0.55)',
+        'da-accent':  '#60A5FA',
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', 'sans-serif'],

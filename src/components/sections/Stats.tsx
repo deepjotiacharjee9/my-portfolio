@@ -45,23 +45,31 @@ function StatItem({ value, suffix, label, sub, index }: (typeof STATS)[0] & { in
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="border-l border-[#1E1E1E] pl-6 first:border-l-0 first:pl-0"
+      className="border-l border-[rgba(96,165,250,0.12)] pl-6 first:border-l-0 first:pl-0"
     >
       <div
-        className="font-display font-extrabold leading-none text-[#F0EDE8] tabular-nums"
+        className="font-display font-extrabold leading-none tabular-nums"
         style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)' }}
       >
-        {count}<span className="text-[#C8A96E]">{suffix}</span>
+        <span style={{
+          backgroundImage: 'linear-gradient(135deg, #FFFFFF, #BAE6FD)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+        }}>
+          {count}
+        </span>
+        <span className="text-[#60A5FA]">{suffix}</span>
       </div>
-      <div className="mt-2.5 text-sm font-medium text-[#888888]">{label}</div>
-      <div className="mt-1 text-xs text-[#383838]">{sub}</div>
+      <div className="mt-2.5 text-sm font-medium text-[rgba(148,163,184,0.68)]">{label}</div>
+      <div className="mt-1 text-xs text-[rgba(148,163,184,0.50)]">{sub}</div>
     </motion.div>
   )
 }
 
 export default function Stats() {
   return (
-    <section className="py-20 px-6 border-t border-[#1A1A1A]">
+    <section className="py-20 px-6 border-t border-[rgba(96,165,250,0.12)]">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {STATS.map((s, i) => (

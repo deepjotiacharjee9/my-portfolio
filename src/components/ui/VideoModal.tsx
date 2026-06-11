@@ -59,20 +59,19 @@ export default function VideoModal({ project, onClose }: Props) {
             <button
               onClick={onClose}
               data-hover
-              className="absolute -top-9 right-0 flex items-center gap-1.5 text-xs text-[#555555] hover:text-[#F0EDE8] transition-colors duration-200"
+              className="absolute -top-9 right-0 flex items-center gap-1.5 text-xs text-[rgba(148,163,184,0.60)] hover:text-white transition-colors duration-200"
             >
               <X size={14} /> Close
             </button>
 
             {/* 16:9 video */}
-            <div className="aspect-video w-full bg-[#141414] border border-[#252525] relative">
+            <div className="aspect-video w-full bg-[#060E1A] border border-[rgba(96,165,250,0.12)] relative">
               {loadError ? (
-                /* ── Drive sharing error state ── */
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-8 text-center">
-                  <AlertTriangle size={28} className="text-[#C8A96E]/60" />
+                  <AlertTriangle size={28} className="text-[#60A5FA]/60" />
                   <div>
-                    <p className="text-[#F0EDE8] text-sm font-medium mb-1">Video couldn't load</p>
-                    <p className="text-[#555555] text-xs leading-relaxed max-w-sm">
+                    <p className="text-[#F8FAFC] text-sm font-medium mb-1">Video couldn't load</p>
+                    <p className="text-[rgba(148,163,184,0.65)] text-xs leading-relaxed max-w-sm">
                       {project.videoType === 'drive'
                         ? 'Make sure the Google Drive file is shared as "Anyone with the link can view".'
                         : 'The video could not be embedded. It may be private or have embedding disabled.'}
@@ -84,7 +83,7 @@ export default function VideoModal({ project, onClose }: Props) {
                       target="_blank"
                       rel="noopener noreferrer"
                       data-hover
-                      className="flex items-center gap-1.5 px-4 py-2 border border-[#C8A96E]/30 text-[#C8A96E] text-xs hover:bg-[#C8A96E]/10 transition-colors"
+                      className="flex items-center gap-1.5 px-4 py-2 border border-[rgba(96,165,250,0.30)] text-[#60A5FA] text-xs hover:bg-[rgba(96,165,250,0.10)] transition-colors"
                     >
                       Open in Google Drive <ExternalLink size={11} />
                     </a>
@@ -99,12 +98,9 @@ export default function VideoModal({ project, onClose }: Props) {
                   allowFullScreen
                   title={project.title}
                   onError={() => setLoadError(true)}
-                  // Detect Google's "unable to open" error page via load event
                   onLoad={(e) => {
                     try {
                       const frame = e.target as HTMLIFrameElement
-                      // If Drive blocks the embed it redirects to accounts.google.com or shows an error
-                      // We can't read cross-origin content, but we can detect a suspiciously short load
                       if (project.videoType === 'drive') {
                         const url = frame.contentWindow?.location?.href
                         if (url && !url.includes('drive.google.com')) setLoadError(true)
@@ -120,16 +116,16 @@ export default function VideoModal({ project, onClose }: Props) {
             {/* Meta row */}
             <div className="mt-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div>
-                <h3 className="font-display font-semibold text-base text-[#F0EDE8]">
+                <h3 className="font-display font-semibold text-base text-[#F8FAFC]">
                   {project.title}
                 </h3>
-                <p className="text-sm text-[#555555] mt-1 max-w-xl leading-relaxed">
+                <p className="text-sm text-[rgba(148,163,184,0.68)] mt-1 max-w-xl leading-relaxed">
                   {project.description}
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5 shrink-0">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-1 text-[11px] border border-[#252525] text-[#555555] tracking-wide">
+                  <span key={tag} className="px-2 py-1 text-[11px] border border-[rgba(96,165,250,0.15)] text-[rgba(148,163,184,0.60)] tracking-wide">
                     {tag}
                   </span>
                 ))}

@@ -14,7 +14,7 @@ const fadeRight = { hidden: { opacity: 0, x:  24 }, show: { opacity: 1, x: 0, tr
 
 export default function About() {
   return (
-    <section id="about" className="py-24 px-6 border-t border-[#1A1A1A]">
+    <section id="about" className="py-24 px-6 border-t border-[rgba(96,165,250,0.12)]">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
         {/* ── Photo ── */}
@@ -25,7 +25,7 @@ export default function About() {
           viewport={{ once: true }}
           className="relative"
         >
-          <div className="aspect-[3/4] bg-[#141414] border border-[#1E1E1E] relative overflow-hidden">
+          <div className="aspect-[3/4] bg-[rgba(255,255,255,0.02)] border border-[rgba(96,165,250,0.12)] relative overflow-hidden">
             {/*
               REPLACE THIS PLACEHOLDER WITH YOUR PHOTO
               Add an <img> tag:
@@ -33,23 +33,23 @@ export default function About() {
                      className="w-full h-full object-cover" />
             */}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-8">
-              <span className="text-[#252525] text-[11px] tracking-[0.2em] uppercase">
+              <span className="text-[rgba(148,163,184,0.30)] text-[11px] tracking-[0.2em] uppercase">
                 Add your photo here
               </span>
-              <span className="text-[#1E1E1E] text-xs">
+              <span style={{ color: 'rgba(96,165,250,0.08)' }} className="text-xs">
                 Replace the placeholder div in About.tsx
               </span>
             </div>
 
             {/* Corner accents */}
-            <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-[#C8A96E]/20" />
-            <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-[#C8A96E]/20" />
+            <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-[rgba(96,165,250,0.20)]" />
+            <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-[rgba(96,165,250,0.20)]" />
           </div>
 
-          {/* Floating badge — hidden on small screens */}
-          <div className="hidden md:block absolute -bottom-5 -right-5 bg-[#141414] border border-[#1E1E1E] px-5 py-4">
-            <div className="text-[10px] text-[#C8A96E] tracking-[0.2em] uppercase mb-1">Based in</div>
-            <div className="text-sm font-semibold text-[#F0EDE8]">India</div>
+          {/* Floating badge */}
+          <div className="hidden md:block absolute -bottom-5 -right-5 bg-[rgba(255,255,255,0.03)] border border-[rgba(96,165,250,0.12)] px-5 py-4">
+            <div className="text-[10px] text-[rgba(147,197,253,0.75)] tracking-[0.2em] uppercase mb-1">Based in</div>
+            <div className="text-sm font-semibold text-[#F8FAFC]">India</div>
           </div>
         </motion.div>
 
@@ -63,14 +63,14 @@ export default function About() {
           <SectionLabel number="04" label="About" />
 
           <h2
-            className="font-display font-extrabold text-[#F0EDE8] leading-tight mb-7"
+            className="font-display font-extrabold text-[#F8FAFC] leading-tight mb-7"
             style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)' }}
           >
             The Editor<br />
-            <span className="text-[#252525]">Behind the Story</span>
+            <span style={{ color: 'rgba(96,165,250,0.12)' }}>Behind the Story</span>
           </h2>
 
-          <div className="space-y-4 text-[#555555] leading-relaxed text-[15px]">
+          <div className="space-y-4 text-[rgba(148,163,184,0.68)] leading-relaxed text-[15px]">
             <p>
               I'm Deepjoti Acharjee — a documentary and long-form video editor
               with a deep belief that every frame should serve the story.
@@ -78,7 +78,7 @@ export default function About() {
             <p>
               I work with creators, podcasters, and filmmakers who want their
               videos to do more than just look good. They want them to{' '}
-              <em className="text-[#888888] not-italic">feel something</em>,
+              <em className="text-[rgba(186,230,253,0.72)] not-italic">feel something</em>,
               retain viewers, and build a loyal audience.
             </p>
             <p>
@@ -94,11 +94,11 @@ export default function About() {
             {skills.map(({ icon: Icon, label, tools }) => (
               <div
                 key={label}
-                className="border border-[#1E1E1E] p-4 hover:border-[#C8A96E]/20 transition-colors duration-300"
+                className="border border-[rgba(96,165,250,0.12)] p-4 hover:border-[rgba(96,165,250,0.25)] transition-colors duration-300"
               >
-                <Icon size={16} className="text-[#C8A96E] mb-3" />
-                <div className="text-sm font-medium text-[#C8C8C8]">{label}</div>
-                <div className="text-xs text-[#383838] mt-1">{tools}</div>
+                <Icon size={16} className="text-[#60A5FA] mb-3" />
+                <div className="text-sm font-medium text-[rgba(226,232,240,0.88)]">{label}</div>
+                <div className="text-xs text-[rgba(148,163,184,0.55)] mt-1">{tools}</div>
               </div>
             ))}
           </div>

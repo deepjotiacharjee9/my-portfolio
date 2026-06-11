@@ -72,10 +72,10 @@ export default function Hero() {
                 {/* Availability chip */}
                 <motion.div variants={item} className="flex items-center gap-2.5 mb-10">
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C8A96E] opacity-60" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C8A96E]" />
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34D399] opacity-70" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#34D399]" />
                   </span>
-                  <span className="text-[11px] text-[#555555] tracking-[0.2em] uppercase">
+                  <span className="text-[11px] text-[rgba(110,231,183,0.95)] tracking-[0.2em] uppercase">
                     Available for new projects
                   </span>
                 </motion.div>
@@ -83,18 +83,25 @@ export default function Hero() {
                 {/* Hero headline */}
                 <motion.h1
                   variants={item}
-                  className="font-display font-extrabold leading-[0.88] tracking-tight text-[#F0EDE8] uppercase"
+                  className="font-display font-extrabold leading-[0.88] tracking-tight uppercase"
                   style={{ fontSize: 'clamp(3.2rem, 9.5vw, 9.5rem)' }}
                 >
-                  <span className="text-[#282828]">VIDEO</span>
+                  <span style={{ color: 'rgba(96,165,250,0.12)' }}>VIDEO</span>
                   <br />
-                  EDITOR.
+                  <span style={{
+                    backgroundImage: 'linear-gradient(135deg, #FFFFFF 15%, #BAE6FD 55%, #60A5FA 90%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}>
+                    EDITOR.
+                  </span>
                 </motion.h1>
 
                 {/* Sub copy */}
                 <motion.p
                   variants={item}
-                  className="mt-7 text-[#555555] text-lg max-w-[400px] leading-relaxed"
+                  className="mt-7 text-[rgba(186,230,253,0.72)] text-lg max-w-[400px] leading-relaxed"
                 >
                   Short form or long form — I make every frame count, every
                   cut intentional, every video worth watching till the end.
@@ -105,7 +112,7 @@ export default function Hero() {
                   <a
                     href="#work"
                     data-hover
-                    className="group flex items-center gap-2 px-6 py-3.5 bg-[#F0EDE8] text-[#0C0C0C] font-semibold text-sm tracking-wide hover:bg-[#C8A96E] transition-colors duration-300"
+                    className="group flex items-center gap-2 px-6 py-3.5 bg-[#2563EB] text-white font-semibold text-sm tracking-wide hover:bg-[#1D4ED8] transition-colors duration-300"
                   >
                     View My Work
                     <ArrowRight
@@ -116,7 +123,7 @@ export default function Hero() {
                   <button
                     onClick={() => setOpen(true)}
                     data-hover
-                    className="group flex items-center gap-2 px-6 py-3.5 border border-[#252525] text-[#F0EDE8] text-sm tracking-wide hover:border-[#C8A96E] hover:text-[#C8A96E] transition-all duration-300"
+                    className="group flex items-center gap-2 px-6 py-3.5 border border-[rgba(96,165,250,0.22)] text-[rgba(203,213,225,0.80)] text-sm tracking-wide hover:border-[rgba(96,165,250,0.45)] hover:text-white transition-all duration-300"
                   >
                     <Play size={13} fill="currentColor" strokeWidth={0} />
                     Play Showreel
@@ -127,7 +134,7 @@ export default function Hero() {
               {/* ── Right: Showreel card ── */}
               <motion.div variants={item} className="w-full">
                 <div
-                  className="relative aspect-video overflow-hidden border border-[#252525] cursor-pointer group"
+                  className="relative aspect-video overflow-hidden border border-[rgba(96,165,250,0.12)] cursor-pointer group"
                   onClick={() => setOpen(true)}
                   data-hover
                 >
@@ -140,28 +147,28 @@ export default function Hero() {
                   />
 
                   {/* Gradient fallback bg */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] to-[#0C0C0C]" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0D1929] to-[#03080F]" />
 
                   {/* Play button */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
-                    <div className="w-[60px] h-[60px] rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#C8A96E]/50 group-hover:bg-[#C8A96E]/5 transition-all duration-400">
-                      <Play size={22} fill="#F0EDE8" strokeWidth={0} className="ml-1" />
+                    <div className="w-[60px] h-[60px] rounded-full border border-white/15 flex items-center justify-center group-hover:border-[rgba(96,165,250,0.40)] group-hover:bg-[rgba(59,130,246,0.08)] transition-all duration-400">
+                      <Play size={22} fill="#FFFFFF" strokeWidth={0} className="ml-1" />
                     </div>
-                    <span className="text-[11px] text-[#444444] tracking-[0.25em] uppercase group-hover:text-[#C8A96E] transition-colors duration-300">
+                    <span className="text-[11px] text-[rgba(148,163,184,0.60)] tracking-[0.25em] uppercase group-hover:text-[#60A5FA] transition-colors duration-300">
                       Play Showreel
                     </span>
                   </div>
 
                   {/* Corner accents */}
-                  <div className="absolute top-0 right-0 w-7 h-7 border-t border-r border-[#C8A96E]/20 z-10" />
-                  <div className="absolute bottom-0 left-0 w-7 h-7 border-b border-l border-[#C8A96E]/20 z-10" />
+                  <div className="absolute top-0 right-0 w-7 h-7 border-t border-r border-[rgba(96,165,250,0.20)] z-10" />
+                  <div className="absolute bottom-0 left-0 w-7 h-7 border-b border-l border-[rgba(96,165,250,0.20)] z-10" />
                 </div>
 
                 <div className="mt-2.5 flex items-center justify-between">
-                  <span className="text-[11px] text-[#2E2E2E] tracking-[0.2em] uppercase">
+                  <span className="text-[11px] text-[rgba(148,163,184,0.35)] tracking-[0.2em] uppercase">
                     Showreel 2024
                   </span>
-                  <span className="text-[11px] text-[#2A2A2A]">
+                  <span className="text-[11px] text-[rgba(148,163,184,0.30)]">
                     Replace with your Drive ID ↑
                   </span>
                 </div>
@@ -171,12 +178,12 @@ export default function Hero() {
         </div>
 
         {/* ── Marquee ticker ── */}
-        <div className="border-t border-[#1A1A1A] py-4 overflow-hidden mt-10">
+        <div className="border-t border-[rgba(96,165,250,0.08)] py-4 overflow-hidden mt-10">
           <div className="flex whitespace-nowrap animate-marquee no-select">
             {[...TICKER, ...TICKER].map((t, i) => (
-              <span key={i} className="mx-5 text-[11px] text-[#2E2E2E] tracking-[0.3em] uppercase">
+              <span key={i} className="mx-5 text-[11px] text-[rgba(148,163,184,0.35)] tracking-[0.3em] uppercase">
                 {t}
-                <span className="text-[#C8A96E]/40 mx-4">·</span>
+                <span className="text-[rgba(96,165,250,0.30)] mx-4">·</span>
               </span>
             ))}
           </div>
