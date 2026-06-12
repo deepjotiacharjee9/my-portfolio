@@ -29,8 +29,9 @@ export default function SiteSettingsPanel() {
     showreel_video_id:   '',
   })
   const [photoPreview, setPhotoPreview] = useState('')
-  const [saving, setSaving]   = useState(false)
-  const [saved,  setSaved]    = useState(false)
+  const [saving,    setSaving]    = useState(false)
+  const [saved,     setSaved]     = useState(false)
+  const [saveError, setSaveError] = useState(false)
 
   useEffect(() => {
     if (!supabase) return
@@ -66,14 +67,20 @@ export default function SiteSettingsPanel() {
   const save = async () => {
     if (!supabase) return
     setSaving(true)
-    await Promise.all(
+    setSaveError(false)
+    const results = await Promise.all(
       Object.entries(form).map(([key, value]) =>
-        supabase!.from('site_settings').upsert({ key, value })
+        supabase!.from('site_settings').upsert({ key, value }, { onConflict: 'key' })
       )
     )
     setSaving(false)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
+    if (results.some((r) => r.error)) {
+      setSaveError(true)
+      setTimeout(() => setSaveError(false), 5000)
+    } else {
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    }
   }
 
   const showreelThumb = form.showreel_video_id
@@ -178,14 +185,21 @@ export default function SiteSettingsPanel() {
         )}
       </div>
 
-      <button
-        onClick={save}
-        disabled={saving}
-        className="flex items-center gap-2 px-6 py-3 bg-[#F0EDE8] text-[#0C0C0C] font-semibold text-sm hover:bg-[#C8A96E] disabled:opacity-40 transition-colors"
-      >
-        <Save size={14} />
-        {saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save Settings'}
-      </button>
+      <div className="space-y-2">
+        <button
+          onClick={save}
+          disabled={saving}
+          className="flex items-center gap-2 px-6 py-3 bg-[#F0EDE8] text-[#0C0C0C] font-semibold text-sm hover:bg-[#C8A96E] disabled:opacity-40 transition-colors"
+        >
+          <Save size={14} />
+          {saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save Settings'}
+        </button>
+        {saveError && (
+          <p className="text-xs text-red-400">
+            Save failed. Make sure the <code className="font-mono bg-[#1A1A1A] px-1 py-0.5">site_settings</code> table exists in Supabase — run the SQL from the setup guide, then try again.
+          </p>
+        )}
+      </div>
     </div>
   )
 }

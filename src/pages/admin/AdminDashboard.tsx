@@ -455,20 +455,20 @@ export default function AdminDashboard({ onLogout }: Props) {
             )}
           </>
         )}
-      </div>
 
-      {/* ── Site Settings tab ── */}
-      {tab === 'settings' && (
-        <>
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className="font-display font-semibold text-[#F0EDE8]">Site Settings</h2>
-              <p className="text-[11px] text-[#383838] mt-0.5">About photo and hero showreel video</p>
+        {/* ── Site Settings tab ── */}
+        {tab === 'settings' && (
+          <>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-display font-semibold text-[#F0EDE8]">Site Settings</h2>
+                <p className="text-[11px] text-[#383838] mt-0.5">About photo and hero showreel video</p>
+              </div>
             </div>
-          </div>
-          <SiteSettingsPanel />
-        </>
-      )}
+            <SiteSettingsPanel />
+          </>
+        )}
+      </div>
 
       {/* ── Delete confirmation ── */}
       {deleteConfirm && (
