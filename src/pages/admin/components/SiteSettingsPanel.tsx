@@ -18,7 +18,7 @@ function parseYouTubeId(raw: string): string {
 
 function toDriveImageUrl(raw: string): string {
   const id = parseDriveFileId(raw)
-  if (id !== raw.trim()) return `https://drive.google.com/uc?export=view&id=${id}`
+  if (id !== raw.trim()) return `https://drive.google.com/thumbnail?id=${id}&sz=w800`
   return raw
 }
 

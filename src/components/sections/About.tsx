@@ -13,6 +13,14 @@ const skills = [
 const fadeLeft  = { hidden: { opacity: 0, x: -24 }, show: { opacity: 1, x: 0, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } } }
 const fadeRight = { hidden: { opacity: 0, x:  24 }, show: { opacity: 1, x: 0, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } } }
 
+function normalizePhotoUrl(url: string): string {
+  const ucMatch = url.match(/[?&]id=([^&]+)/)
+  if (ucMatch && url.includes('drive.google.com/uc')) {
+    return `https://drive.google.com/thumbnail?id=${ucMatch[1]}&sz=w800`
+  }
+  return url
+}
+
 export default function About() {
   const { settings } = useSiteSettings()
 
@@ -31,7 +39,7 @@ export default function About() {
           <div className="aspect-[3/4] bg-[rgba(255,255,255,0.02)] border border-[rgba(96,165,250,0.12)] relative overflow-hidden">
             {settings.aboutPhotoUrl ? (
               <img
-                src={settings.aboutPhotoUrl}
+                src={normalizePhotoUrl(settings.aboutPhotoUrl)}
                 alt="Deepjoti Acharjee"
                 className="w-full h-full object-cover"
               />
