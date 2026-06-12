@@ -71,7 +71,7 @@ function EraSection({
           style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)' }}
         >
           {eraLabel === 'Recent Works'
-            ? <>Latest &amp; <span style={{ color: 'rgba(96,165,250,0.12)' }}>Greatest</span></>
+            ? <>Latest &amp; <span style={{ color: 'rgba(96,165,250,0.32)' }}>Greatest</span></>
             : <>The Archive</>
           }
         </h2>

@@ -36,7 +36,7 @@ export default function About() {
               <span className="text-[rgba(148,163,184,0.55)] text-[11px] tracking-[0.2em] uppercase">
                 Add your photo here
               </span>
-              <span style={{ color: 'rgba(96,165,250,0.08)' }} className="text-xs">
+              <span style={{ color: 'rgba(96,165,250,0.40)' }} className="text-xs">
                 Replace the placeholder div in About.tsx
               </span>
             </div>
@@ -67,7 +67,7 @@ export default function About() {
             style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)' }}
           >
             The Editor<br />
-            <span style={{ color: 'rgba(96,165,250,0.12)' }}>Behind the Story</span>
+            <span style={{ color: 'rgba(96,165,250,0.32)' }}>Behind the Story</span>
           </h2>
 
           <div className="space-y-4 text-[rgba(148,163,184,0.85)] leading-relaxed text-[15px]">

@@ -81,7 +81,7 @@ export default function Hero() {
                   className="font-display font-extrabold leading-[0.88] tracking-tight uppercase"
                   style={{ fontSize: 'clamp(3.2rem, 9.5vw, 9.5rem)' }}
                 >
-                  <span style={{ color: 'rgba(96,165,250,0.12)' }}>VIDEO</span>
+                  <span style={{ color: 'rgba(96,165,250,0.32)' }}>VIDEO</span>
                   <br />
                   <span style={{
                     backgroundImage: 'linear-gradient(135deg, #FFFFFF 15%, #BAE6FD 55%, #60A5FA 90%)',
