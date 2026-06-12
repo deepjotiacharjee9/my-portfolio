@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase, isConfigured } from '../lib/supabase'
-import { projects as fallbackProjects, testimonials as fallbackTestimonials } from '../data/projects'
-import type { Project, Testimonial } from '../types'
+import { projects as fallbackProjects, testimonials as fallbackTestimonials, frameDesigns as fallbackFrameDesigns } from '../data/projects'
+import type { Project, Testimonial, FrameDesign } from '../types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function toProject(r: any): Project {
@@ -69,4 +69,33 @@ export function useTestimonials() {
   }, [])
 
   return { testimonials }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function toFrameDesign(r: any): FrameDesign {
+  return {
+    id:          r.id,
+    title:       r.title,
+    description: r.description ?? undefined,
+    imageUrl:    r.image_url,
+    category:    r.category ?? 'Design',
+  }
+}
+
+export function useFrameDesigns() {
+  const [designs, setDesigns] = useState<FrameDesign[]>(fallbackFrameDesigns)
+
+  useEffect(() => {
+    if (!isConfigured || !supabase) return
+    supabase
+      .from('frame_designs')
+      .select('*')
+      .eq('visible', true)
+      .order('sort_order', { ascending: true })
+      .then(({ data }) => {
+        if (data) setDesigns(data.map(toFrameDesign))
+      })
+  }, [])
+
+  return { designs }
 }

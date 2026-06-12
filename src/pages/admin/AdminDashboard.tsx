@@ -12,13 +12,14 @@ import {
   verticalListSortingStrategy,
   arrayMove,
 } from '@dnd-kit/sortable'
-import { Plus, LogOut, RefreshCw, Quote, Pencil, Trash2 } from 'lucide-react'
+import { Plus, LogOut, RefreshCw, Quote, Pencil, Trash2, Image } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import ProjectFormModal, { type ProjectRow } from './components/ProjectFormModal'
 import SortableRow from './components/SortableRow'
+import FrameDesignFormModal, { type FrameDesignRow } from './components/FrameDesignFormModal'
 import type { Testimonial } from '../../types'
 
-type Tab = 'projects' | 'testimonials'
+type Tab = 'projects' | 'frameDesigns' | 'testimonials'
 
 // ── Testimonial form modal ──────────────────────────────────────────────────
 
@@ -86,9 +87,11 @@ export default function AdminDashboard({ onLogout }: Props) {
   const [tab,          setTab]         = useState<Tab>('projects')
   const [projects,     setProjects]    = useState<ProjectRow[]>([])
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+  const [frameDesigns, setFrameDesigns] = useState<FrameDesignRow[]>([])
   const [loading,      setLoading]     = useState(true)
   const [editProject,  setEditProject] = useState<ProjectRow | null | undefined>(undefined)
   const [editTestimonial, setEditTestimonial] = useState<Testimonial | null | undefined>(undefined)
+  const [editFrameDesign, setEditFrameDesign] = useState<FrameDesignRow | null | undefined>(undefined)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
@@ -106,7 +109,13 @@ export default function AdminDashboard({ onLogout }: Props) {
     if (data) setTestimonials(data as Testimonial[])
   }, [])
 
-  useEffect(() => { loadProjects(); loadTestimonials() }, [loadProjects, loadTestimonials])
+  const loadFrameDesigns = useCallback(async () => {
+    if (!supabase) return
+    const { data } = await supabase.from('frame_designs').select('*').order('sort_order')
+    if (data) setFrameDesigns(data as FrameDesignRow[])
+  }, [])
+
+  useEffect(() => { loadProjects(); loadTestimonials(); loadFrameDesigns() }, [loadProjects, loadTestimonials, loadFrameDesigns])
 
   // ── Drag end — reorder + update sort_order in DB ────────────────
   const handleDragEnd = async (event: DragEndEvent) => {
@@ -166,6 +175,30 @@ export default function AdminDashboard({ onLogout }: Props) {
     setTestimonials((prev) => prev.filter((t) => t.id !== id))
   }
 
+  // ── Frame Design CRUD ───────────────────────────────────────────
+  const saveFrameDesign = async (data: Omit<FrameDesignRow, 'id' | 'sort_order'>) => {
+    if (!supabase) return
+    if (editFrameDesign?.id) {
+      await supabase.from('frame_designs').update(data).eq('id', editFrameDesign.id)
+    } else {
+      const maxOrder = frameDesigns.length ? Math.max(...frameDesigns.map((d) => d.sort_order)) + 1 : 0
+      await supabase.from('frame_designs').insert({ ...data, sort_order: maxOrder })
+    }
+    await loadFrameDesigns()
+  }
+
+  const deleteFrameDesign = async (id: string) => {
+    if (!supabase) return
+    await supabase.from('frame_designs').delete().eq('id', id)
+    setFrameDesigns((prev) => prev.filter((d) => d.id !== id))
+  }
+
+  const toggleFrameDesignVisible = async (id: string, visible: boolean) => {
+    if (!supabase) return
+    await supabase.from('frame_designs').update({ visible }).eq('id', id)
+    setFrameDesigns((prev) => prev.map((d) => (d.id === id ? { ...d, visible } : d)))
+  }
+
   const logout = async () => {
     if (supabase) await supabase.auth.signOut()
     onLogout()
@@ -194,7 +227,11 @@ export default function AdminDashboard({ onLogout }: Props) {
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Tabs */}
         <div className="flex gap-1 mb-8 border-b border-[#1A1A1A]">
-          {([['projects', 'Projects'], ['testimonials', 'Testimonials']] as const).map(([key, label]) => (
+          {([
+            ['projects',     'Projects',      projects.length],
+            ['frameDesigns', 'Frame Designs', frameDesigns.length],
+            ['testimonials', 'Testimonials',  testimonials.length],
+          ] as const).map(([key, label, count]) => (
             <button
               key={key}
               onClick={() => setTab(key)}
@@ -205,9 +242,7 @@ export default function AdminDashboard({ onLogout }: Props) {
               }`}
             >
               {label}
-              <span className="ml-2 text-[10px] tabular-nums">
-                {key === 'projects' ? projects.length : testimonials.length}
-              </span>
+              <span className="ml-2 text-[10px] tabular-nums">{count}</span>
             </button>
           ))}
         </div>
@@ -273,6 +308,97 @@ export default function AdminDashboard({ onLogout }: Props) {
                     </SortableContext>
                   </DndContext>
                 </table>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── Frame Designs tab ── */}
+        {tab === 'frameDesigns' && (
+          <>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-display font-semibold text-[#F0EDE8]">Frame Designs</h2>
+                <p className="text-[11px] text-[#383838] mt-0.5">
+                  Thumbnails, frames, and graphic designs shown between Recent Works and Old Videos
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={loadFrameDesigns} className="p-2 border border-[#1E1E1E] text-[#383838] hover:text-[#F0EDE8] transition-colors">
+                  <RefreshCw size={14} />
+                </button>
+                <button
+                  onClick={() => setEditFrameDesign(null)}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#F0EDE8] text-[#0C0C0C] font-semibold text-xs hover:bg-[#C8A96E] transition-colors"
+                >
+                  <Plus size={13} /> Add Design
+                </button>
+              </div>
+            </div>
+
+            {frameDesigns.length === 0 ? (
+              <div className="border border-dashed border-[#1E1E1E] py-16 text-center">
+                <Image size={28} className="text-[#1E1E1E] mx-auto mb-4" />
+                <p className="text-[#2E2E2E] text-sm mb-4">No frame designs yet</p>
+                <button
+                  onClick={() => setEditFrameDesign(null)}
+                  className="text-xs text-[#C8A96E]/70 hover:text-[#C8A96E] transition-colors"
+                >
+                  + Upload your first design
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {frameDesigns.map((d) => (
+                  <div
+                    key={d.id}
+                    className="border border-[#1A1A1A] hover:border-[#252525] transition-colors group"
+                  >
+                    {/* Thumbnail */}
+                    <div className="aspect-video bg-[#0A0A0A] overflow-hidden relative">
+                      <img
+                        src={d.image_url}
+                        alt={d.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2' }}
+                      />
+                      {!d.visible && (
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                          <span className="text-[10px] text-[#555555] tracking-[0.15em] uppercase">Hidden</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Info + actions */}
+                    <div className="p-3">
+                      <div className="text-[10px] text-[#C8A96E]/70 tracking-[0.15em] uppercase mb-0.5">
+                        {d.category}
+                      </div>
+                      <div className="text-xs text-[#C8C8C8] truncate">{d.title}</div>
+
+                      <div className="flex items-center gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => toggleFrameDesignVisible(d.id, !d.visible)}
+                          className="flex-1 py-1 text-[10px] border border-[#1E1E1E] text-[#383838] hover:text-[#F0EDE8] transition-colors tracking-[0.1em] uppercase"
+                        >
+                          {d.visible ? 'Hide' : 'Show'}
+                        </button>
+                        <button
+                          onClick={() => setEditFrameDesign(d)}
+                          className="p-1.5 text-[#383838] hover:text-[#C8A96E] transition-colors border border-[#1E1E1E]"
+                        >
+                          <Pencil size={12} />
+                        </button>
+                        <button
+                          onClick={() => deleteFrameDesign(d.id)}
+                          className="p-1.5 text-[#383838] hover:text-red-400 transition-colors border border-[#1E1E1E]"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </>
@@ -364,6 +490,15 @@ export default function AdminDashboard({ onLogout }: Props) {
           initial={editTestimonial}
           onSave={saveTestimonial}
           onClose={() => setEditTestimonial(undefined)}
+        />
+      )}
+
+      {/* ── Frame Design form modal ── */}
+      {editFrameDesign !== undefined && (
+        <FrameDesignFormModal
+          initial={editFrameDesign}
+          onSave={saveFrameDesign}
+          onClose={() => setEditFrameDesign(undefined)}
         />
       )}
     </div>

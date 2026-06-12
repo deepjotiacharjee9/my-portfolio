@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import ProjectCard from '../ui/ProjectCard'
 import VideoModal from '../ui/VideoModal'
 import SectionLabel from '../ui/SectionLabel'
+import FrameDesigns from './FrameDesigns'
 import { useProjects } from '../../hooks/useProjects'
 import type { Project } from '../../types'
 
@@ -123,6 +124,8 @@ export default function Work() {
           />
         </motion.div>
 
+        <FrameDesigns />
+
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -131,7 +134,7 @@ export default function Work() {
         >
           <EraSection
             eraLabel="Old Videos"
-            sectionNumber="03"
+            sectionNumber="04"
             eraKey="old"
             allProjects={projects}
             onSelect={setSelected}

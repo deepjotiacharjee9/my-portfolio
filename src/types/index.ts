@@ -33,3 +33,11 @@ export interface Testimonial {
   content: string
   avatar?: string
 }
+
+export interface FrameDesign {
+  id: string
+  title: string
+  description?: string
+  imageUrl: string
+  category: string
+}

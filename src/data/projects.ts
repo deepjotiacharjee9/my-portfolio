@@ -1,4 +1,4 @@
-import type { Project, Testimonial } from '../types'
+import type { Project, Testimonial, FrameDesign } from '../types'
 
 /**
  * HOW TO ADD YOUR PROJECTS
@@ -182,6 +182,8 @@ export const projects: Project[] = [
     duration: '18:40',
   },
 ]
+
+export const frameDesigns: FrameDesign[] = []
 
 export const testimonials: Testimonial[] = [
   {

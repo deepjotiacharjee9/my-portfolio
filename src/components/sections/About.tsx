@@ -60,7 +60,7 @@ export default function About() {
           whileInView="show"
           viewport={{ once: true }}
         >
-          <SectionLabel number="04" label="About" />
+          <SectionLabel number="05" label="About" />
 
           <h2
             className="font-display font-extrabold text-[#F8FAFC] leading-tight mb-7"
