@@ -2,10 +2,10 @@ import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 const STATS = [
-  { value: 50,  suffix: '+',  label: 'Videos Edited',    sub: 'Across all formats'        },
-  { value: 10,  suffix: 'M+', label: 'Views Generated',  sub: 'Combined across clients'   },
-  { value: 5,   suffix: '+',  label: 'Years Experience',  sub: 'Documentary & long-form'  },
-  { value: 100, suffix: '%',  label: 'Client Retention',  sub: 'Repeat clients & referrals'},
+  { value: 50,  suffix: '+',  label: 'Videos Edited',      sub: 'Across all formats'           },
+  { value: 2,   suffix: '+',  label: 'Years Experience',    sub: 'Content creator & YouTuber'   },
+  { value: 3,   suffix: '+',  label: 'Month Internship',    sub: 'UVAHCARE — real client work'  },
+  { value: 100, suffix: '%',  label: 'Client Satisfaction', sub: 'Every project, every time'    },
 ]
 
 function useCountUp(target: number, duration = 1800, enabled = false) {
