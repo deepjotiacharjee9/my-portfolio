@@ -1,22 +1,30 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Play, Clock } from 'lucide-react'
+import { Play, Clock, X } from 'lucide-react'
 import type { Project } from '../../types'
 
 interface Props {
   project: Project
-  onClick: (p: Project) => void
   index: number
+}
+
+function embedUrl(p: Project) {
+  if (p.videoType === 'drive') {
+    return `https://drive.google.com/file/d/${p.videoId}/preview`
+  }
+  return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&modestbranding=1`
 }
 
 function autoThumb(p: Project): string {
   if (p.thumbnail) return p.thumbnail
-  if (p.videoType === 'drive')   return `https://drive.google.com/thumbnail?id=${p.videoId}&sz=w800`
+  if (p.videoType === 'drive') return `https://drive.google.com/thumbnail?id=${p.videoId}&sz=w800`
   return `https://img.youtube.com/vi/${p.videoId}/maxresdefault.jpg`
 }
 
-export default function ProjectCard({ project, onClick, index }: Props) {
+export default function ProjectCard({ project, index }: Props) {
   const [imgError, setImgError] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const isShort = project.format === 'short-form'
   const thumb = autoThumb(project)
 
   return (
@@ -26,50 +34,69 @@ export default function ProjectCard({ project, onClick, index }: Props) {
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.55, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
       className="group cursor-pointer"
-      onClick={() => onClick(project)}
+      onClick={() => { if (!playing) setPlaying(true) }}
       data-hover
     >
-      {/* ── Thumbnail ── */}
-      <div className="relative overflow-hidden aspect-video bg-[#060E1A]">
-        {!imgError && (
-          <img
-            src={thumb}
-            alt={project.title}
-            loading="lazy"
-            onError={() => setImgError(true)}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          />
-        )}
+      {/* Thumbnail / Player */}
+      <div className={`relative overflow-hidden bg-[#060E1A] ${isShort ? 'aspect-[9/16]' : 'aspect-video'}`}>
+        {playing ? (
+          <>
+            <iframe
+              src={embedUrl(project)}
+              className="w-full h-full"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title={project.title}
+            />
+            <button
+              onClick={(e) => { e.stopPropagation(); setPlaying(false) }}
+              className="absolute top-2 right-2 w-7 h-7 bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors z-10"
+              aria-label="Stop video"
+            >
+              <X size={13} />
+            </button>
+          </>
+        ) : (
+          <>
+            {!imgError && (
+              <img
+                src={thumb}
+                alt={project.title}
+                loading="lazy"
+                onError={() => setImgError(true)}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+            )}
 
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/55 transition-colors duration-300 flex items-center justify-center">
-          <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            whileHover={{ scale: 1, opacity: 1 }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-13 h-13 border border-white/30 rounded-full flex items-center justify-center"
-            style={{ width: 52, height: 52 }}
-          >
-            <Play size={18} fill="#FFFFFF" strokeWidth={0} className="ml-0.5" />
-          </motion.div>
-        </div>
+            {/* Hover play overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/55 transition-colors duration-300 flex items-center justify-center">
+              <div
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/30 rounded-full flex items-center justify-center"
+                style={{ width: 52, height: 52 }}
+              >
+                <Play size={18} fill="#FFFFFF" strokeWidth={0} className="ml-0.5" />
+              </div>
+            </div>
 
-        {/* Format badge */}
-        <div className="absolute top-3 left-3 px-2 py-1 bg-black/65 backdrop-blur-sm">
-          <span className="text-[10px] text-[rgba(147,197,253,0.75)] tracking-[0.2em] uppercase font-medium">
-            {project.format === 'short-form' ? 'Short Form' : 'Long Form'}
-          </span>
-        </div>
+            {/* Format badge */}
+            <div className="absolute top-3 left-3 px-2 py-1 bg-black/65 backdrop-blur-sm">
+              <span className="text-[10px] text-[rgba(147,197,253,0.75)] tracking-[0.2em] uppercase font-medium">
+                {isShort ? 'Short Form' : 'Long Form'}
+              </span>
+            </div>
 
-        {/* Duration badge */}
-        {project.duration && (
-          <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-1 bg-black/65 backdrop-blur-sm">
-            <Clock size={9} className="text-[rgba(148,163,184,0.78)]" />
-            <span className="text-[10px] text-[rgba(148,163,184,0.78)]">{project.duration}</span>
-          </div>
+            {/* Duration badge */}
+            {project.duration && (
+              <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-1 bg-black/65 backdrop-blur-sm">
+                <Clock size={9} className="text-[rgba(148,163,184,0.78)]" />
+                <span className="text-[10px] text-[rgba(148,163,184,0.78)]">{project.duration}</span>
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      {/* ── Info row ── */}
+      {/* Info row */}
       <div className="mt-3 flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="font-display font-semibold text-[rgba(248,250,252,0.95)] group-hover:text-[#60A5FA] transition-colors duration-200 leading-snug truncate">

@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Play } from 'lucide-react'
-import VideoModal from '../ui/VideoModal'
+import { ArrowRight, Play, X } from 'lucide-react'
 import ToolkitStrip from '../ui/ToolkitStrip'
-import type { Project } from '../../types'
 
 /**
  * SHOWREEL CONFIG
@@ -17,21 +15,7 @@ import type { Project } from '../../types'
  * ──────────────────────────────────────────────────────
  */
 const SHOWREEL_ID = 'YOUR_SHOWREEL_DRIVE_FILE_ID'
-
-const showreel: Project = {
-  id:          'showreel',
-  title:       'Showreel 2024',
-  client:      'Deepjoti Acharjee',
-  year:        2024,
-  era:         'recent',
-  format:      'long-form',
-  thumbnail:   '',
-  videoType:   'drive',
-  videoId:     SHOWREEL_ID,
-  description: 'A curated selection of my best work — short form and long form.',
-  tags:        ['Showreel', 'Short Form', 'Long Form'],
-  featured:    true,
-}
+const SHOWREEL_EMBED = `https://drive.google.com/file/d/${SHOWREEL_ID}/preview`
 
 
 const container = {
@@ -44,12 +28,11 @@ const item = {
 }
 
 export default function Hero() {
-  const [open, setOpen] = useState(false)
+  const [playing, setPlaying] = useState(false)
   const thumbUrl = `https://drive.google.com/thumbnail?id=${SHOWREEL_ID}&sz=w800`
 
   return (
-    <>
-      <section
+    <section
         id="hero"
         className="relative min-h-screen flex flex-col justify-between pt-20"
       >
@@ -116,7 +99,7 @@ export default function Hero() {
                     />
                   </a>
                   <button
-                    onClick={() => setOpen(true)}
+                    onClick={() => setPlaying(true)}
                     data-hover
                     className="group flex items-center gap-2 px-6 py-3.5 border border-[rgba(96,165,250,0.22)] text-[rgba(203,213,225,0.80)] text-sm tracking-wide hover:border-[rgba(96,165,250,0.45)] hover:text-white transition-all duration-300"
                   >
@@ -130,33 +113,54 @@ export default function Hero() {
               <motion.div variants={item} className="w-full">
                 <div
                   className="relative aspect-video overflow-hidden border border-[rgba(96,165,250,0.12)] cursor-pointer group"
-                  onClick={() => setOpen(true)}
+                  onClick={() => { if (!playing) setPlaying(true) }}
                   data-hover
                 >
-                  {/* Thumbnail */}
-                  <img
-                    src={thumbUrl}
-                    alt="Showreel thumbnail"
-                    className="absolute inset-0 w-full h-full object-cover brightness-50 group-hover:brightness-60 transition-all duration-500"
-                    onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0' }}
-                  />
+                  {playing ? (
+                    <>
+                      <iframe
+                        src={SHOWREEL_EMBED}
+                        className="w-full h-full"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowFullScreen
+                        title="Showreel"
+                      />
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setPlaying(false) }}
+                        className="absolute top-2 right-2 w-7 h-7 bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors z-10"
+                        aria-label="Stop video"
+                      >
+                        <X size={13} />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      {/* Thumbnail */}
+                      <img
+                        src={thumbUrl}
+                        alt="Showreel thumbnail"
+                        className="absolute inset-0 w-full h-full object-cover brightness-50 group-hover:brightness-60 transition-all duration-500"
+                        onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0' }}
+                      />
 
-                  {/* Gradient fallback bg */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#0D1929] to-[#03080F]" />
+                      {/* Gradient fallback bg */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0D1929] to-[#03080F]" />
 
-                  {/* Play button */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
-                    <div className="w-[60px] h-[60px] rounded-full border border-white/15 flex items-center justify-center group-hover:border-[rgba(96,165,250,0.40)] group-hover:bg-[rgba(59,130,246,0.08)] transition-all duration-400">
-                      <Play size={22} fill="#FFFFFF" strokeWidth={0} className="ml-1" />
-                    </div>
-                    <span className="text-[11px] text-[rgba(148,163,184,0.82)] tracking-[0.25em] uppercase group-hover:text-[#60A5FA] transition-colors duration-300">
-                      Play Showreel
-                    </span>
-                  </div>
+                      {/* Play button */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+                        <div className="w-[60px] h-[60px] rounded-full border border-white/15 flex items-center justify-center group-hover:border-[rgba(96,165,250,0.40)] group-hover:bg-[rgba(59,130,246,0.08)] transition-all duration-400">
+                          <Play size={22} fill="#FFFFFF" strokeWidth={0} className="ml-1" />
+                        </div>
+                        <span className="text-[11px] text-[rgba(148,163,184,0.82)] tracking-[0.25em] uppercase group-hover:text-[#60A5FA] transition-colors duration-300">
+                          Play Showreel
+                        </span>
+                      </div>
 
-                  {/* Corner accents */}
-                  <div className="absolute top-0 right-0 w-7 h-7 border-t border-r border-[rgba(96,165,250,0.20)] z-10" />
-                  <div className="absolute bottom-0 left-0 w-7 h-7 border-b border-l border-[rgba(96,165,250,0.20)] z-10" />
+                      {/* Corner accents */}
+                      <div className="absolute top-0 right-0 w-7 h-7 border-t border-r border-[rgba(96,165,250,0.20)] z-10" />
+                      <div className="absolute bottom-0 left-0 w-7 h-7 border-b border-l border-[rgba(96,165,250,0.20)] z-10" />
+                    </>
+                  )}
                 </div>
 
                 <div className="mt-2.5 flex items-center justify-between">
@@ -174,8 +178,5 @@ export default function Hero() {
 
         <ToolkitStrip />
       </section>
-
-      <VideoModal project={open ? showreel : null} onClose={() => setOpen(false)} />
-    </>
   )
 }
