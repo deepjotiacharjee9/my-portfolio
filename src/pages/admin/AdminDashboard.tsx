@@ -17,9 +17,10 @@ import { supabase } from '../../lib/supabase'
 import ProjectFormModal, { type ProjectRow } from './components/ProjectFormModal'
 import SortableRow from './components/SortableRow'
 import FrameDesignFormModal, { type FrameDesignRow } from './components/FrameDesignFormModal'
+import SiteSettingsPanel from './components/SiteSettingsPanel'
 import type { Testimonial } from '../../types'
 
-type Tab = 'projects' | 'frameDesigns' | 'testimonials'
+type Tab = 'projects' | 'frameDesigns' | 'testimonials' | 'settings'
 
 // ── Testimonial form modal ──────────────────────────────────────────────────
 
@@ -231,6 +232,7 @@ export default function AdminDashboard({ onLogout }: Props) {
             ['projects',     'Projects',      projects.length],
             ['frameDesigns', 'Frame Designs', frameDesigns.length],
             ['testimonials', 'Testimonials',  testimonials.length],
+            ['settings',     'Site Settings', null],
           ] as const).map(([key, label, count]) => (
             <button
               key={key}
@@ -242,7 +244,7 @@ export default function AdminDashboard({ onLogout }: Props) {
               }`}
             >
               {label}
-              <span className="ml-2 text-[10px] tabular-nums">{count}</span>
+              {count !== null && <span className="ml-2 text-[10px] tabular-nums">{count}</span>}
             </button>
           ))}
         </div>
@@ -454,6 +456,19 @@ export default function AdminDashboard({ onLogout }: Props) {
           </>
         )}
       </div>
+
+      {/* ── Site Settings tab ── */}
+      {tab === 'settings' && (
+        <>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h2 className="font-display font-semibold text-[#F0EDE8]">Site Settings</h2>
+              <p className="text-[11px] text-[#383838] mt-0.5">About photo and hero showreel video</p>
+            </div>
+          </div>
+          <SiteSettingsPanel />
+        </>
+      )}
 
       {/* ── Delete confirmation ── */}
       {deleteConfirm && (

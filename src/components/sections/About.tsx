@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Film, Palette, Monitor, Mic } from 'lucide-react'
 import SectionLabel from '../ui/SectionLabel'
+import { useSiteSettings } from '../../hooks/useSiteSettings'
 
 const skills = [
   { icon: Film,    label: 'Non-linear Editing', tools: 'Premiere Pro · DaVinci Resolve' },
@@ -13,6 +14,8 @@ const fadeLeft  = { hidden: { opacity: 0, x: -24 }, show: { opacity: 1, x: 0, tr
 const fadeRight = { hidden: { opacity: 0, x:  24 }, show: { opacity: 1, x: 0, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } } }
 
 export default function About() {
+  const { settings } = useSiteSettings()
+
   return (
     <section id="about" className="py-24 px-6 border-t border-[rgba(96,165,250,0.12)]">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -26,20 +29,22 @@ export default function About() {
           className="relative"
         >
           <div className="aspect-[3/4] bg-[rgba(255,255,255,0.02)] border border-[rgba(96,165,250,0.12)] relative overflow-hidden">
-            {/*
-              REPLACE THIS PLACEHOLDER WITH YOUR PHOTO
-              Add an <img> tag:
-                <img src="/your-photo.jpg" alt="Deepjoti Acharjee"
-                     className="w-full h-full object-cover" />
-            */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-8">
-              <span className="text-[rgba(148,163,184,0.55)] text-[11px] tracking-[0.2em] uppercase">
-                Add your photo here
-              </span>
-              <span style={{ color: 'rgba(96,165,250,0.40)' }} className="text-xs">
-                Replace the placeholder div in About.tsx
-              </span>
-            </div>
+            {settings.aboutPhotoUrl ? (
+              <img
+                src={settings.aboutPhotoUrl}
+                alt="Deepjoti Acharjee"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-8">
+                <span className="text-[rgba(148,163,184,0.55)] text-[11px] tracking-[0.2em] uppercase">
+                  Add photo in admin
+                </span>
+                <span style={{ color: 'rgba(96,165,250,0.40)' }} className="text-xs">
+                  Admin → Site Settings → About Photo
+                </span>
+              </div>
+            )}
 
             {/* Corner accents */}
             <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-[rgba(96,165,250,0.20)]" />

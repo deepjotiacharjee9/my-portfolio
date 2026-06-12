@@ -2,20 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Play, X } from 'lucide-react'
 import ToolkitStrip from '../ui/ToolkitStrip'
-
-/**
- * SHOWREEL CONFIG
- * ──────────────────────────────────────────────────────
- * Replace SHOWREEL_DRIVE_ID with your Google Drive file ID.
- *   Share URL: https://drive.google.com/file/d/FILE_ID/view
- *   → copy the FILE_ID portion only
- *
- * Or switch to YouTube:
- *   videoType: 'youtube', videoId: 'YOUR_YT_VIDEO_ID'
- * ──────────────────────────────────────────────────────
- */
-const SHOWREEL_ID = 'YOUR_SHOWREEL_DRIVE_FILE_ID'
-const SHOWREEL_EMBED = `https://drive.google.com/file/d/${SHOWREEL_ID}/preview`
+import { useSiteSettings } from '../../hooks/useSiteSettings'
 
 
 const container = {
@@ -29,7 +16,20 @@ const item = {
 
 export default function Hero() {
   const [playing, setPlaying] = useState(false)
-  const thumbUrl = `https://drive.google.com/thumbnail?id=${SHOWREEL_ID}&sz=w800`
+  const { settings } = useSiteSettings()
+
+  const showreelId    = settings.showreelVideoId
+  const showreelType  = settings.showreelVideoType
+  const showreelEmbed = showreelId
+    ? (showreelType === 'drive'
+        ? `https://drive.google.com/file/d/${showreelId}/preview`
+        : `https://www.youtube.com/embed/${showreelId}?autoplay=1&rel=0&modestbranding=1`)
+    : ''
+  const thumbUrl = showreelId
+    ? (showreelType === 'drive'
+        ? `https://drive.google.com/thumbnail?id=${showreelId}&sz=w800`
+        : `https://img.youtube.com/vi/${showreelId}/maxresdefault.jpg`)
+    : ''
 
   return (
     <section
@@ -99,9 +99,10 @@ export default function Hero() {
                     />
                   </a>
                   <button
-                    onClick={() => setPlaying(true)}
+                    onClick={() => showreelId && setPlaying(true)}
                     data-hover
-                    className="group flex items-center gap-2 px-6 py-3.5 border border-[rgba(96,165,250,0.22)] text-[rgba(203,213,225,0.80)] text-sm tracking-wide hover:border-[rgba(96,165,250,0.45)] hover:text-white transition-all duration-300"
+                    disabled={!showreelId}
+                    className="group flex items-center gap-2 px-6 py-3.5 border border-[rgba(96,165,250,0.22)] text-[rgba(203,213,225,0.80)] text-sm tracking-wide hover:border-[rgba(96,165,250,0.45)] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     <Play size={13} fill="currentColor" strokeWidth={0} />
                     Play Showreel
@@ -113,13 +114,13 @@ export default function Hero() {
               <motion.div variants={item} className="w-full">
                 <div
                   className="relative aspect-video overflow-hidden border border-[rgba(96,165,250,0.12)] cursor-pointer group"
-                  onClick={() => { if (!playing) setPlaying(true) }}
+                  onClick={() => { if (!playing && showreelId) setPlaying(true) }}
                   data-hover
                 >
-                  {playing ? (
+                  {playing && showreelEmbed ? (
                     <>
                       <iframe
-                        src={SHOWREEL_EMBED}
+                        src={showreelEmbed}
                         className="w-full h-full"
                         allow="autoplay; fullscreen; picture-in-picture"
                         allowFullScreen
@@ -167,9 +168,11 @@ export default function Hero() {
                   <span className="text-[11px] text-[rgba(148,163,184,0.65)] tracking-[0.2em] uppercase">
                     Showreel 2024
                   </span>
-                  <span className="text-[11px] text-[rgba(148,163,184,0.55)]">
-                    Replace with your Drive ID ↑
-                  </span>
+                  {!showreelId && (
+                    <span className="text-[11px] text-[rgba(148,163,184,0.40)]">
+                      Set in Admin → Site Settings
+                    </span>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
