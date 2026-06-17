@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import ToolkitStrip from '../ui/ToolkitStrip'
+import StarBackground from '../ui/StarBackground'
 
 const container = {
   hidden: {},
@@ -19,23 +20,9 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex flex-col justify-between pt-20 overflow-hidden"
     >
-      {/* ── Aurora Drift ── */}
+      {/* ── Star Background ── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div
-          className="aurora-blob aurora-a absolute rounded-full"
-          style={{ width: 500, height: 500, top: '8%', left: '12%',
-            background: '#3b82f6', filter: 'blur(70px)', opacity: 0.45 }}
-        />
-        <div
-          className="aurora-blob aurora-b absolute rounded-full"
-          style={{ width: 420, height: 420, top: '28%', right: '8%',
-            background: '#22d3ee', filter: 'blur(70px)', opacity: 0.45 }}
-        />
-        <div
-          className="aurora-blob aurora-c absolute rounded-full"
-          style={{ width: 380, height: 380, bottom: '12%', left: '38%',
-            background: '#6366f1', filter: 'blur(70px)', opacity: 0.40 }}
-        />
+        <StarBackground />
       </div>
 
       {/* ── Main content ── */}
