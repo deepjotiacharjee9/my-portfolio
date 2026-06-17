@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar'
 import Hero from './components/sections/Hero'
 import Stats from './components/sections/Stats'
 import Work from './components/sections/Work'
+import FrameDesigns from './components/sections/FrameDesigns'
 import About from './components/sections/About'
 import Footer from './components/layout/Footer'
 import AdminApp from './pages/admin/AdminApp'
@@ -67,6 +68,7 @@ export default function App() {
         <Hero />
         <Stats />
         <Work />
+        <FrameDesigns />
         <About />
       </main>
       <Footer />

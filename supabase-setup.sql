@@ -39,9 +39,29 @@ create table if not exists testimonials (
   created_at  timestamptz not null default now()
 );
 
+-- ── Frame Designs table ──────────────────────────────────────────
+create table if not exists frame_designs (
+  id          uuid        default gen_random_uuid() primary key,
+  title       text        not null,
+  description text,
+  image_url   text        not null default '',
+  category    text        not null default 'Design',
+  visible     boolean     not null default true,
+  sort_order  integer     not null default 0,
+  created_at  timestamptz not null default now()
+);
+
+-- ── Site Settings table ──────────────────────────────────────────
+create table if not exists site_settings (
+  key        text primary key,
+  value      text not null default ''
+);
+
 -- ── Row Level Security ───────────────────────────────────────────
-alter table projects     enable row level security;
-alter table testimonials enable row level security;
+alter table projects      enable row level security;
+alter table testimonials  enable row level security;
+alter table frame_designs enable row level security;
+alter table site_settings enable row level security;
 
 -- Anyone can read (portfolio visitors)
 create policy "Public read projects"
@@ -50,9 +70,21 @@ create policy "Public read projects"
 create policy "Public read testimonials"
   on testimonials for select using (true);
 
+create policy "Public read frame_designs"
+  on frame_designs for select using (true);
+
+create policy "Public read site_settings"
+  on site_settings for select using (true);
+
 -- Only logged-in users (you) can write
 create policy "Auth write projects"
   on projects for all using (auth.uid() is not null);
 
 create policy "Auth write testimonials"
   on testimonials for all using (auth.uid() is not null);
+
+create policy "Auth write frame_designs"
+  on frame_designs for all using (auth.uid() is not null);
+
+create policy "Auth write site_settings"
+  on site_settings for all using (auth.uid() is not null);

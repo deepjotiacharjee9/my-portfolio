@@ -13,7 +13,7 @@ function embedUrl(p: Project) {
     return `https://drive.google.com/file/d/${p.videoId}/preview`
   }
   if (p.format === 'short-form') {
-    return `https://www.youtube.com/embed/${p.videoId}?rel=0&playsinline=1`
+    return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&playsinline=1`
   }
   const origin = encodeURIComponent(window.location.origin)
   return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&origin=${origin}`
@@ -149,6 +149,25 @@ export default function ProjectCard({ project, index }: Props) {
                     </>
                   ) : isDrive ? (
                     <DriveIframe videoId={project.videoId} title={project.title} />
+                  ) : isShort ? (
+                    // Extend iframe 108% beyond each side so its total width is 316% of the card
+                    // width (= card_height × 16/9), making YouTube render at 16:9 and fill the
+                    // card height. The card's overflow:hidden clips the sides.
+                    <iframe
+                      src={embedUrl(project)}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        left: '-108%',
+                        right: '-108%',
+                        border: 'none',
+                      }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      title={project.title}
+                    />
                   ) : (
                     <iframe
                       src={embedUrl(project)}

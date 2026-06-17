@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import ProjectCard from '../ui/ProjectCard'
 import SectionLabel from '../ui/SectionLabel'
-import FrameDesigns from './FrameDesigns'
+
 import { useProjects } from '../../hooks/useProjects'
 import type { Project } from '../../types'
 
@@ -28,10 +28,7 @@ function FormatSubSection({
         <span className="text-[11px] text-[rgba(148,163,184,0.65)] tabular-nums">{items.length} videos</span>
       </div>
 
-      <div className={isShort
-        ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
-        : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5'
-      }>
+      <div className={`grid grid-cols-2 ${isShort ? 'gap-24 max-w-3xl mx-auto' : 'gap-6'}`}>
         {items.map((project, i) => (
           <ProjectCard
             key={project.id}
@@ -107,8 +104,6 @@ export default function Work() {
           allProjects={projects}
         />
       </motion.div>
-
-      <FrameDesigns />
 
       <motion.div
         initial={{ opacity: 0 }}

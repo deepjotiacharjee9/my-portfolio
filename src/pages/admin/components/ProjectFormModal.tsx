@@ -52,9 +52,12 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
   const set = <K extends keyof typeof form>(k: K, v: typeof form[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
 
-  // Auto-extract ID if user pastes a full URL
+  // Auto-extract ID if user pastes a full URL or full iframe embed code
   const handleVideoIdChange = (raw: string) => {
     let id = raw.trim()
+    // If user pastes a full <iframe ...> embed code, extract just the src URL
+    const iframeSrc = id.match(/src=["']([^"']+)["']/)
+    if (iframeSrc) id = iframeSrc[1]
     if (form.video_type === 'direct') { set('video_id', id); return }
     // Google Drive: https://drive.google.com/file/d/FILE_ID/view  or  /open?id=FILE_ID
     const driveMatch = id.match(/\/file\/d\/([^/?&]+)/) || id.match(/[?&]id=([^&]+)/)
