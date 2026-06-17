@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Play, Clock, X } from 'lucide-react'
 import type { Project } from '../../types'
 import { useInView } from '../../hooks/useInView'
@@ -25,9 +25,29 @@ function autoThumb(p: Project): string {
 export default function ProjectCard({ project, index }: Props) {
   const [imgError, setImgError] = useState(false)
   const [playing, setPlaying] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const isShort = project.format === 'short-form'
+  const isDrive = project.videoType === 'drive'
   const thumb = autoThumb(project)
   const { ref, inView } = useInView(0.15)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const handler = () => setIsMobile(mq.matches)
+    handler()
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const handleCardClick = () => {
+    if (playing) return
+    // Drive iframes don't work well on mobile — open Drive's native player instead
+    if (isDrive && isMobile) {
+      window.open(`https://drive.google.com/file/d/${project.videoId}/view`, '_blank')
+    } else {
+      setPlaying(true)
+    }
+  }
 
   return (
     /* Outer: scroll reveal — owns opacity + translateY */
@@ -40,21 +60,41 @@ export default function ProjectCard({ project, index }: Props) {
     <div className="card-tilt">
     <article
       className="group cursor-pointer"
-      onClick={() => { if (!playing) setPlaying(true) }}
+      onClick={handleCardClick}
       data-hover
     >
       {/* Thumbnail / Player */}
       <div className={`relative overflow-hidden bg-[#060E1A] ${isShort ? 'aspect-[9/16]' : 'aspect-video'}`}>
         {playing ? (
           <>
-            <iframe
-              src={embedUrl(project)}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-              title={project.title}
-            />
+            {isDrive ? (
+              /* Clip Drive's ~52px toolbar so video fills the frame */
+              <div className="absolute inset-0 overflow-hidden">
+                <iframe
+                  src={`https://drive.google.com/file/d/${project.videoId}/preview`}
+                  style={{
+                    position: 'absolute',
+                    top: '-52px',
+                    left: 0,
+                    width: '100%',
+                    height: 'calc(100% + 52px)',
+                    border: 'none',
+                  }}
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                  title={project.title}
+                />
+              </div>
+            ) : (
+              <iframe
+                src={embedUrl(project)}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                title={project.title}
+              />
+            )}
             <button
               onClick={(e) => { e.stopPropagation(); setPlaying(false) }}
               className="absolute top-2 right-2 w-7 h-7 bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors z-10"
