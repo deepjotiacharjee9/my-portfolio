@@ -65,14 +65,14 @@ function EraSection({
           className="font-display font-extrabold text-[#F8FAFC] leading-tight"
           style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)' }}
         >
-          {eraLabel === 'Recent Works'
+          {eraKey === 'recent'
             ? <>Latest &amp; <span style={{ color: 'rgba(96,165,250,0.32)' }}>Greatest</span></>
             : <>The Archive</>
           }
         </h2>
 
-        <FormatSubSection title="Short Form" items={shortForm} baseIndex={0}          isShort={true}  />
-        <FormatSubSection title="Long Form"  items={longForm}  baseIndex={shortForm.length} isShort={false} />
+        <FormatSubSection title={eraKey === 'recent' ? 'Client Work' : 'Sample Edits'} items={shortForm} baseIndex={0}          isShort={true}  />
+        <FormatSubSection title="YouTube Videos" items={longForm}  baseIndex={shortForm.length} isShort={false} />
 
         {eraProjects.length === 0 && (
           <p className="mt-10 text-[rgba(148,163,184,0.65)] text-sm">
@@ -112,7 +112,7 @@ export default function Work() {
         transition={{ duration: 0.5 }}
       >
         <EraSection
-          eraLabel="Old Videos"
+          eraLabel="Archive"
           sectionNumber="04"
           eraKey="old"
           allProjects={projects}
