@@ -119,10 +119,10 @@ export default function FrameDesignFormModal({ initial, onSave, onClose }: Props
               className={inp}
               value={form.image_url}
               onChange={handleImageUrl}
-              placeholder="https://drive.google.com/file/d/FILE_ID/view"
+              placeholder="https://files.catbox.moe/abc123.gif  or  Google Drive share link"
             />
             <p className="text-[10px] text-[#2E2E2E] mt-1.5">
-              Drive links are auto-converted. <span className="text-[#C8A96E]/70">GIFs must be shared as "Anyone with the link" — Drive may still block animated GIFs; use a direct URL (Imgur, Cloudinary) for guaranteed animation.</span>
+              Paste any direct image URL (Catbox, Cloudinary, PostImages) or a Google Drive share link — Drive links are auto-converted. <span className="text-[#C8A96E]/70">For GIFs, use Catbox or Cloudinary for guaranteed animation.</span>
             </p>
           </div>
 
