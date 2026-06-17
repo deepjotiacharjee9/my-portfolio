@@ -34,10 +34,29 @@ export default function Hero() {
   return (
     <section
         id="hero"
-        className="relative min-h-screen flex flex-col justify-between pt-20"
+        className="relative min-h-screen flex flex-col justify-between pt-20 overflow-hidden"
       >
+        {/* ── Aurora Drift ── */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <div
+            className="aurora-blob aurora-a absolute rounded-full"
+            style={{ width: 500, height: 500, top: '8%', left: '12%',
+              background: '#3b82f6', filter: 'blur(70px)', opacity: 0.45 }}
+          />
+          <div
+            className="aurora-blob aurora-b absolute rounded-full"
+            style={{ width: 420, height: 420, top: '28%', right: '8%',
+              background: '#22d3ee', filter: 'blur(70px)', opacity: 0.45 }}
+          />
+          <div
+            className="aurora-blob aurora-c absolute rounded-full"
+            style={{ width: 380, height: 380, bottom: '12%', left: '38%',
+              background: '#6366f1', filter: 'blur(70px)', opacity: 0.40 }}
+          />
+        </div>
+
         {/* ── Main content ── */}
-        <div className="flex-1 flex items-center px-6">
+        <div className="relative z-[2] flex-1 flex items-center px-6">
           <div className="max-w-6xl mx-auto w-full">
             <motion.div
               variants={container}
@@ -179,7 +198,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <ToolkitStrip />
+        <div className="relative z-[2]"><ToolkitStrip /></div>
       </section>
   )
 }

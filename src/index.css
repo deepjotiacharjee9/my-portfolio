@@ -88,3 +88,59 @@
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* ── Aurora Drift (Hero background) ─────────────────── */
+@keyframes aurora-drift-a {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(35px, -28px); }
+}
+@keyframes aurora-drift-b {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(-30px, 38px); }
+}
+@keyframes aurora-drift-c {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(40px, 30px); }
+}
+
+.aurora-a { animation: aurora-drift-a 18s ease-in-out infinite; }
+.aurora-b { animation: aurora-drift-b 16s ease-in-out infinite; }
+.aurora-c { animation: aurora-drift-c 20s ease-in-out infinite; }
+
+/* ── Scroll Reveal ───────────────────────────────────── */
+.card-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1),
+              transform 0.7s cubic-bezier(.22,.61,.36,1);
+  perspective: 1000px;
+}
+.card-reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Card Lift + Tilt ────────────────────────────────── */
+.card-tilt {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform;
+}
+.card-tilt:hover {
+  transform: translateY(-10px) rotateX(6deg) rotateY(-6deg) scale(1.02);
+  box-shadow: 0 26px 60px -22px rgba(91, 168, 255, 0.55);
+}
+
+/* ── Reduced Motion Guard ────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob { animation: none !important; }
+
+  .card-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .card-tilt:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}

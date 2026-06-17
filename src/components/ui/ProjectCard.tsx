@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Play, Clock, X } from 'lucide-react'
 import type { Project } from '../../types'
+import { useInView } from '../../hooks/useInView'
 
 interface Props {
   project: Project
@@ -26,13 +26,18 @@ export default function ProjectCard({ project, index }: Props) {
   const [playing, setPlaying] = useState(false)
   const isShort = project.format === 'short-form'
   const thumb = autoThumb(project)
+  const { ref, inView } = useInView(0.15)
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    /* Outer: scroll reveal — owns opacity + translateY */
+    <div
+      ref={ref}
+      className={`card-reveal${inView ? ' in' : ''}`}
+      style={{ transitionDelay: `${index * 0.07}s` }}
+    >
+    {/* Inner: hover lift + tilt — owns 3-D transform */}
+    <div className="card-tilt">
+    <article
       className="group cursor-pointer"
       onClick={() => { if (!playing) setPlaying(true) }}
       data-hover
@@ -106,6 +111,8 @@ export default function ProjectCard({ project, index }: Props) {
         </div>
         <span className="text-xs text-[rgba(148,163,184,0.65)] tabular-nums shrink-0 mt-0.5">{project.year}</span>
       </div>
-    </motion.article>
+    </article>
+    </div>
+    </div>
   )
 }
