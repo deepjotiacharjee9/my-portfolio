@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion'
-import { Film, Palette, Monitor, Mic } from 'lucide-react'
+import { Film, Palette, Monitor, Layers } from 'lucide-react'
 import SectionLabel from '../ui/SectionLabel'
 import { useSiteSettings } from '../../hooks/useSiteSettings'
 
 const skills = [
-  { icon: Film,    label: 'Non-linear Editing', tools: 'Premiere Pro · DaVinci Resolve' },
-  { icon: Palette, label: 'Color Grading',       tools: 'DaVinci Resolve · Lumetri'     },
-  { icon: Monitor, label: 'Motion Graphics',     tools: 'After Effects · Motion'         },
-  { icon: Mic,     label: 'Sound Design',        tools: 'Audition · Logic Pro'           },
+  { icon: Film,    label: 'Non-linear Editing & Sound Design', tools: 'Premiere Pro'                  },
+  { icon: Palette, label: 'Color Grading',                     tools: 'Premiere Pro · DaVinci Resolve' },
+  { icon: Monitor, label: 'Motion Graphics',                   tools: 'After Effects'                  },
+  { icon: Layers,  label: 'Frame Design',                      tools: 'Photoshop · Illustrator'        },
 ]
 
 const fadeLeft  = { hidden: { opacity: 0, x: -24 }, show: { opacity: 1, x: 0, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } } }
@@ -85,20 +85,25 @@ export default function About() {
 
           <div className="space-y-4 text-[rgba(148,163,184,0.85)] leading-relaxed text-[15px]">
             <p>
-              I'm Deepjoti Acharjee — a documentary and long-form video editor
-              with a deep belief that every frame should serve the story.
+              I'm Deepjoti Acharjee — a video editor who spent five years in a
+              classroom before picking up a timeline.
             </p>
             <p>
-              I work with creators, podcasters, and filmmakers who want their
-              videos to do more than just look good. They want them to{' '}
+              Teaching did something to me that no editing course could. It
+              trained me to read a room — to know when attention is slipping,
+              when to slow down, and when to cut to the chase. That same instinct
+              now lives inside every edit I make.
+            </p>
+            <p>
+              I will like to work with creators, podcasters, and filmmakers who
+              want their videos to do more than just look good — they want them
+              to{' '}
               <em className="text-[rgba(186,230,253,0.72)] not-italic">feel something</em>,
-              retain viewers, and build a loyal audience.
-            </p>
-            <p>
-              My background is in documentary storytelling, which means I think
-              about structure, pacing, and emotional arc before I touch a single
-              cut. That's the difference between a video that performs and one
-              that people talk about.
+              retain viewers, and build a loyal audience. My background is in
+              documentary storytelling, so I think about structure, pacing, and
+              emotional arc before I touch a single cut. If you're looking for an
+              editor who treats your story like it matters — because it does —
+              let's talk.
             </p>
           </div>
 
