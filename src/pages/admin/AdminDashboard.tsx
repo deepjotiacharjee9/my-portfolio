@@ -137,12 +137,14 @@ export default function AdminDashboard({ onLogout }: Props) {
   // ── Project CRUD ────────────────────────────────────────────────
   const saveProject = async (data: Omit<ProjectRow, 'id' | 'sort_order'>) => {
     if (!supabase) return
+    let error
     if (editProject?.id) {
-      await supabase.from('projects').update(data).eq('id', editProject.id)
+      ;({ error } = await supabase.from('projects').update(data).eq('id', editProject.id))
     } else {
       const maxOrder = projects.length ? Math.max(...projects.map((p) => p.sort_order)) + 1 : 0
-      await supabase.from('projects').insert({ ...data, sort_order: maxOrder })
+      ;({ error } = await supabase.from('projects').insert({ ...data, sort_order: maxOrder }))
     }
+    if (error) throw new Error(error.message)
     await loadProjects()
   }
 
