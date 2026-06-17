@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Play, Clock, X } from 'lucide-react'
 import type { Project } from '../../types'
 import { useInView } from '../../hooks/useInView'
@@ -12,8 +12,6 @@ function embedUrl(p: Project) {
   if (p.videoType === 'drive') {
     return `https://drive.google.com/file/d/${p.videoId}/preview`
   }
-  // Shorts player throws an error with autoplay=1 when the iframe is created
-  // asynchronously — use a simpler URL without autoplay for short-form content
   if (p.format === 'short-form') {
     return `https://www.youtube.com/embed/${p.videoId}?rel=0&playsinline=1`
   }
@@ -30,42 +28,23 @@ function autoThumb(p: Project): string {
 export default function ProjectCard({ project, index }: Props) {
   const [imgError, setImgError] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const isShort = project.format === 'short-form'
   const isDrive = project.videoType === 'drive'
   const thumb = autoThumb(project)
   const { ref, inView } = useInView(0.15)
 
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)')
-    const handler = () => setIsMobile(mq.matches)
-    handler()
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-
-  const handleCardClick = () => {
-    if (playing) return
-    // Drive iframes don't work well on mobile — open Drive's native player instead
-    if (isDrive && isMobile) {
-      window.open(`https://drive.google.com/file/d/${project.videoId}/view`, '_blank')
-    } else {
-      setPlaying(true)
-    }
-  }
-
   return (
-    /* Outer: scroll reveal — owns opacity + translateY */
+    /* Outer: scroll reveal */
     <div
       ref={ref}
       className={`card-reveal${inView ? ' in' : ''}`}
       style={{ transitionDelay: `${index * 0.07}s` }}
     >
-    {/* Inner: hover lift + tilt — owns 3-D transform */}
+    {/* Inner: hover lift + tilt */}
     <div className="card-tilt">
     <article
       className="group cursor-pointer"
-      onClick={handleCardClick}
+      onClick={() => { if (!playing) setPlaying(true) }}
       data-hover
     >
       {/* Thumbnail / Player */}
@@ -73,7 +52,11 @@ export default function ProjectCard({ project, index }: Props) {
         {playing ? (
           <>
             {isDrive ? (
-              /* Clip Drive's ~52px toolbar so video fills the frame */
+              /*
+               * Drive's /preview page has a ~52px toolbar at the top.
+               * We offset the iframe upward to hide it and compensate the height,
+               * so the actual video fills the full frame on all screen sizes.
+               */
               <div className="absolute inset-0 overflow-hidden">
                 <iframe
                   src={`https://drive.google.com/file/d/${project.videoId}/preview`}
@@ -85,7 +68,7 @@ export default function ProjectCard({ project, index }: Props) {
                     height: 'calc(100% + 52px)',
                     border: 'none',
                   }}
-                  allow="autoplay; fullscreen"
+                  allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
                   title={project.title}
                 />
