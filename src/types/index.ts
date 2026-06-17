@@ -9,13 +9,16 @@ export interface Project {
   format: 'short-form' | 'long-form'
   /** Direct URL to a custom thumbnail image, or leave empty to auto-generate */
   thumbnail: string
-  videoType: 'drive' | 'youtube'
+  videoType: 'drive' | 'youtube' | 'direct'
   /**
    * Google Drive: the file ID from the share URL
    *   https://drive.google.com/file/d/FILE_ID/view  →  FILE_ID
    *
    * YouTube: the video ID from the watch URL
    *   https://www.youtube.com/watch?v=VIDEO_ID      →  VIDEO_ID
+   *
+   * Direct (Internet Archive / MP4): the full direct URL
+   *   https://archive.org/download/IDENTIFIER/filename.mp4
    */
   videoId: string
   description: string

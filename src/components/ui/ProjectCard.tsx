@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Play, Clock, X } from 'lucide-react'
 import type { Project } from '../../types'
 import { useInView } from '../../hooks/useInView'
@@ -22,6 +22,7 @@ function embedUrl(p: Project) {
 function autoThumb(p: Project): string {
   if (p.thumbnail) return p.thumbnail
   if (p.videoType === 'drive') return `https://drive.google.com/thumbnail?id=${p.videoId}&sz=w800`
+  if (p.videoType === 'direct') return ''
   return `https://img.youtube.com/vi/${p.videoId}/maxresdefault.jpg`
 }
 
@@ -52,8 +53,18 @@ export default function ProjectCard({ project, index }: Props) {
   const [mobileModal, setMobileModal] = useState(false)
   const isShort = project.format === 'short-form'
   const isDrive = project.videoType === 'drive'
+  const isDirect = project.videoType === 'direct'
+  // archive.org/embed URLs need an iframe; raw MP4 URLs use native <video>
+  const isArchiveEmbed = isDirect && project.videoId.includes('archive.org/embed')
   const thumb = autoThumb(project)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const { ref, inView } = useInView(0.15)
+
+  useEffect(() => {
+    if (playing && isDirect && !isArchiveEmbed && videoRef.current) {
+      videoRef.current.play().catch(() => {})
+    }
+  }, [playing, isDirect, isArchiveEmbed])
 
   const handleClick = () => {
     if (playing) return
@@ -110,30 +121,57 @@ export default function ProjectCard({ project, index }: Props) {
             <div className={`relative overflow-hidden bg-[#060E1A] ${isShort ? 'aspect-[9/16]' : 'aspect-video'}`}>
               {playing ? (
                 <>
-                  {isDrive
-                    ? <DriveIframe videoId={project.videoId} title={project.title} />
-                    : (
+                  {isDirect && !isArchiveEmbed ? (
+                    <video
+                      ref={videoRef}
+                      src={project.videoId}
+                      className="w-full h-full object-contain bg-black"
+                      controls
+                      playsInline
+                      autoPlay
+                    />
+                  ) : isDirect && isArchiveEmbed ? (
+                    <>
                       <iframe
-                        src={embedUrl(project)}
+                        src={project.videoId}
                         className="w-full h-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allow="fullscreen"
                         allowFullScreen
-                        referrerPolicy="strict-origin-when-cross-origin"
                         title={project.title}
                       />
-                    )
-                  }
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setPlaying(false) }}
-                    className="absolute top-2 right-2 w-7 h-7 bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors z-10"
-                    aria-label="Stop video"
-                  >
-                    <X size={13} />
-                  </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setPlaying(false) }}
+                        className="absolute top-2 right-2 w-7 h-7 bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors z-10"
+                        aria-label="Stop video"
+                      >
+                        <X size={13} />
+                      </button>
+                    </>
+                  ) : isDrive ? (
+                    <DriveIframe videoId={project.videoId} title={project.title} />
+                  ) : (
+                    <iframe
+                      src={embedUrl(project)}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      title={project.title}
+                    />
+                  )}
+                  {!isDirect && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setPlaying(false) }}
+                      className="absolute top-2 right-2 w-7 h-7 bg-black/70 flex items-center justify-center text-white hover:bg-black/90 transition-colors z-10"
+                      aria-label="Stop video"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
                 </>
               ) : (
                 <>
-                  {!imgError && (
+                  {!imgError && thumb && (
                     <img
                       src={thumb}
                       alt={project.title}

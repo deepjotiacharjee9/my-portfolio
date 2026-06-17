@@ -9,7 +9,7 @@ export interface ProjectRow {
   era:         'recent' | 'old'
   format:      'short-form' | 'long-form'
   thumbnail:   string
-  video_type:  'drive' | 'youtube'
+  video_type:  'drive' | 'youtube' | 'direct'
   video_id:    string
   description: string
   tags:        string[]
@@ -55,6 +55,7 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
   // Auto-extract ID if user pastes a full URL
   const handleVideoIdChange = (raw: string) => {
     let id = raw.trim()
+    if (form.video_type === 'direct') { set('video_id', id); return }
     // Google Drive: https://drive.google.com/file/d/FILE_ID/view  or  /open?id=FILE_ID
     const driveMatch = id.match(/\/file\/d\/([^/?&]+)/) || id.match(/[?&]id=([^&]+)/)
     // YouTube: watch?v=ID  or  youtu.be/ID  or  /embed/ID
@@ -157,8 +158,8 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
           {/* Video Type + ID */}
           <div>
             <label className={lbl}>Video Source</label>
-            <div className="flex gap-2 mb-2">
-              {(['drive', 'youtube'] as const).map((vt) => (
+            <div className="flex gap-2 mb-2 flex-wrap">
+              {(['drive', 'youtube', 'direct'] as const).map((vt) => (
                 <button key={vt} type="button"
                   onClick={() => set('video_type', vt)}
                   className={`px-4 py-2 text-xs tracking-[0.15em] uppercase transition-colors border ${
@@ -166,21 +167,25 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
                       ? 'border-[#C8A96E]/50 text-[#C8A96E] bg-[#C8A96E]/5'
                       : 'border-[#1E1E1E] text-[#383838] hover:border-[#2E2E2E]'
                   }`}>
-                  {vt === 'drive' ? 'Google Drive' : 'YouTube'}
+                  {vt === 'drive' ? 'Google Drive' : vt === 'youtube' ? 'YouTube' : 'Archive / Direct'}
                 </button>
               ))}
             </div>
             <input required className={inp}
-              placeholder={form.video_type === 'drive'
-                ? 'Paste full Drive link or just the File ID'
-                : 'Paste full YouTube link or just the Video ID'}
+              placeholder={
+                form.video_type === 'drive'
+                  ? 'Paste full Drive link or just the File ID'
+                  : form.video_type === 'youtube'
+                  ? 'Paste full YouTube link or just the Video ID'
+                  : 'Paste archive.org/embed/… URL or a direct MP4 URL'
+              }
               value={form.video_id}
               onChange={(e) => handleVideoIdChange(e.target.value)} />
 
-            {/* Parsed ID preview */}
+            {/* Parsed ID / URL preview */}
             {form.video_id && (
-              <p className="mt-1.5 text-[10px] text-[#C8A96E]/70 font-mono">
-                ID: {form.video_id}
+              <p className="mt-1.5 text-[10px] text-[#C8A96E]/70 font-mono break-all">
+                {form.video_type === 'direct' ? 'URL: ' : 'ID: '}{form.video_id}
               </p>
             )}
 
@@ -194,13 +199,27 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
                 </p>
               </div>
             )}
+
+            {/* Direct URL note */}
+            {form.video_type === 'direct' && (
+              <div className="mt-2 flex items-start gap-2 bg-[#C8A96E]/5 border border-[#C8A96E]/15 px-3 py-2">
+                <span className="text-[#C8A96E] text-xs shrink-0 mt-0.5">!</span>
+                <p className="text-[10px] text-[#555555] leading-relaxed">
+                  Direct videos don't auto-generate thumbnails. Add a <span className="text-[#C8A96E]">Custom Thumbnail URL</span> below, or the card will show a plain dark background.
+                </p>
+              </div>
+            )}
           </div>
 
-          {/* Custom thumbnail (optional) */}
+          {/* Custom thumbnail */}
           <div>
-            <label className={lbl}>Custom Thumbnail URL (optional)</label>
+            <label className={lbl}>
+              Custom Thumbnail URL {form.video_type === 'direct' ? '(required for direct videos)' : '(optional)'}
+            </label>
             <input className={inp}
-              placeholder="Leave blank to auto-generate from Drive / YouTube"
+              placeholder={form.video_type === 'direct'
+                ? 'Thumbnail image URL — no auto-generation for direct videos'
+                : 'Leave blank to auto-generate from Drive / YouTube'}
               value={form.thumbnail}
               onChange={(e) => set('thumbnail', e.target.value)} />
           </div>

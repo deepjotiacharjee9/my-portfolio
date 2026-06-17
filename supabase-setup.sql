@@ -16,7 +16,7 @@ create table if not exists projects (
                           check (format in ('short-form', 'long-form')),
   thumbnail   text        not null default '',
   video_type  text        not null default 'drive'
-                          check (video_type in ('drive', 'youtube')),
+                          check (video_type in ('drive', 'youtube', 'direct')),
   video_id    text        not null default '',
   description text        not null default '',
   tags        text[]      not null default '{}',
