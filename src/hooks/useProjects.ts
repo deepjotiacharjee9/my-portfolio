@@ -12,7 +12,7 @@ function toProject(r: any): Project {
     year:        r.year,
     era:         r.era,
     format:      r.format,
-    thumbnail:   r.thumbnail ?? '',
+    thumbnail:   r.thumbnail ? upgradeDriveImageUrl(r.thumbnail) : '',
     videoType:   r.video_type,
     videoId:     r.video_id,
     description: r.description ?? '',
@@ -73,9 +73,11 @@ export function useTestimonials() {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function upgradeDriveImageUrl(url: string): string {
-  // Migrate old uc?export=view URLs to lh3 format which serves GIFs correctly
-  const m = url.match(/drive\.google\.com\/uc\?export=view&id=([^&]+)/)
-  if (m) return `https://lh3.googleusercontent.com/d/${m[1]}`
+  if (!url.includes('drive.google.com')) return url
+  const fileMatch = url.match(/\/file\/d\/([^/?#]+)/)
+  if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`
+  const idMatch = url.match(/[?&]id=([^&#]+)/)
+  if (idMatch) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`
   return url
 }
 

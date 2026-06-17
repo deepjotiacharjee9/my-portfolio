@@ -52,6 +52,14 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
   const set = <K extends keyof typeof form>(k: K, v: typeof form[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
 
+  const handleThumbnailChange = (raw: string) => {
+    const m = raw.match(/\/file\/d\/([^/?#]+)/)
+    if (m) { set('thumbnail', `https://lh3.googleusercontent.com/d/${m[1]}`); return }
+    const idM = raw.match(/[?&]id=([^&#]+)/)
+    if (idM) { set('thumbnail', `https://lh3.googleusercontent.com/d/${idM[1]}`); return }
+    set('thumbnail', raw)
+  }
+
   // Auto-extract ID if user pastes a full URL or full iframe embed code
   const handleVideoIdChange = (raw: string) => {
     let id = raw.trim()
@@ -224,7 +232,7 @@ export default function ProjectFormModal({ initial, onSave, onClose }: Props) {
                 ? 'Thumbnail image URL — no auto-generation for direct videos'
                 : 'Leave blank to auto-generate from Drive / YouTube'}
               value={form.thumbnail}
-              onChange={(e) => set('thumbnail', e.target.value)} />
+              onChange={(e) => handleThumbnailChange(e.target.value)} />
           </div>
 
           {/* Description */}
