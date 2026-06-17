@@ -67,11 +67,11 @@ function EraSection({
         >
           {eraKey === 'recent'
             ? <>Latest &amp; <span style={{ color: 'rgba(96,165,250,0.32)' }}>Greatest</span></>
-            : <>The Archive</>
+            : <>Old Work <span style={{ color: 'rgba(96,165,250,0.28)', fontSize: '0.55em', fontWeight: 400, letterSpacing: '0.08em' }}>(Archive)</span></>
           }
         </h2>
 
-        <FormatSubSection title={eraKey === 'recent' ? 'Client Work' : 'Sample Edits'} items={shortForm} baseIndex={0}          isShort={true}  />
+        <FormatSubSection title={eraKey === 'recent' ? 'Sample Edits' : 'Client Work'} items={shortForm} baseIndex={0}          isShort={true}  />
         <FormatSubSection title="YouTube Videos" items={longForm}  baseIndex={shortForm.length} isShort={false} />
 
         {eraProjects.length === 0 && (
@@ -112,7 +112,7 @@ export default function Work() {
         transition={{ duration: 0.5 }}
       >
         <EraSection
-          eraLabel="Archive"
+          eraLabel="Old Work"
           sectionNumber="04"
           eraKey="old"
           allProjects={projects}
