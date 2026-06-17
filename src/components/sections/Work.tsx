@@ -28,7 +28,7 @@ function FormatSubSection({
         <span className="text-[11px] text-[rgba(148,163,184,0.65)] tabular-nums">{items.length} videos</span>
       </div>
 
-      <div className={`grid grid-cols-2 ${isShort ? 'gap-24 max-w-3xl mx-auto' : 'gap-6'}`}>
+      <div className={isShort ? 'grid grid-cols-2 gap-24 max-w-3xl mx-auto' : 'grid grid-cols-1 sm:grid-cols-2 gap-6'}>
         {items.map((project, i) => (
           <ProjectCard
             key={project.id}
