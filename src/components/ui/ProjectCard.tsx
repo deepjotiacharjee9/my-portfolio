@@ -54,8 +54,8 @@ export default function ProjectCard({ project, index }: Props) {
   const isShort = project.format === 'short-form'
   const isDrive = project.videoType === 'drive'
   const isDirect = project.videoType === 'direct'
-  // archive.org/embed URLs need an iframe; raw MP4 URLs use native <video>
-  const isArchiveEmbed = isDirect && project.videoId.includes('archive.org/embed')
+  // embed URLs (Bunny, archive.org, etc.) need an iframe; raw MP4 URLs use native <video>
+  const isArchiveEmbed = isDirect && project.videoId.includes('/embed/')
   const thumb = autoThumb(project)
   const videoRef = useRef<HTMLVideoElement>(null)
   const { ref, inView } = useInView(0.15)
@@ -135,7 +135,7 @@ export default function ProjectCard({ project, index }: Props) {
                       <iframe
                         src={project.videoId}
                         className="w-full h-full"
-                        allow="fullscreen"
+                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                         allowFullScreen
                         title={project.title}
                       />
