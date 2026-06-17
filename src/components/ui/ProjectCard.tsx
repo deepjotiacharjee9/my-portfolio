@@ -12,6 +12,11 @@ function embedUrl(p: Project) {
   if (p.videoType === 'drive') {
     return `https://drive.google.com/file/d/${p.videoId}/preview`
   }
+  // Shorts player throws an error with autoplay=1 when the iframe is created
+  // asynchronously — use a simpler URL without autoplay for short-form content
+  if (p.format === 'short-form') {
+    return `https://www.youtube.com/embed/${p.videoId}?rel=0&playsinline=1`
+  }
   const origin = encodeURIComponent(window.location.origin)
   return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&origin=${origin}`
 }
