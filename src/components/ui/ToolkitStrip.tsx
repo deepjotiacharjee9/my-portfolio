@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { ICON_BODIES } from '../../data/toolIcons'
 import type { IconData } from '../../data/toolIcons'
 
@@ -37,6 +38,49 @@ function BrandIcon({ icon, color }: { icon: Tool['icon']; color?: string }) {
 }
 
 export default function ToolkitStrip() {
+  const trackRef   = useRef<HTMLDivElement>(null)
+  const pos        = useRef(0)
+  const dragging   = useRef(false)
+  const dragStartX = useRef(0)
+  const dragStartP = useRef(0)
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    let raf: number
+    const tick = () => {
+      if (!dragging.current) {
+        const half = track.scrollWidth / 2
+        pos.current -= 0.6
+        if (pos.current <= -half) pos.current += half
+        track.style.transform = `translateX(${pos.current}px)`
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    dragging.current = true
+    dragStartX.current = e.clientX
+    dragStartP.current = pos.current
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging.current || !trackRef.current) return
+    const half  = trackRef.current.scrollWidth / 2
+    let   newPos = dragStartP.current + (e.clientX - dragStartX.current)
+    // keep in loop range
+    newPos = ((newPos % half) + half) % half - half
+    pos.current = newPos
+    trackRef.current.style.transform = `translateX(${newPos}px)`
+  }
+
+  const onPointerUp = () => { dragging.current = false }
+
   return (
     <div className="border-t border-[rgba(96,165,250,0.08)] mt-10 flex items-stretch overflow-hidden">
 
@@ -48,9 +92,15 @@ export default function ToolkitStrip() {
         </span>
       </div>
 
-      {/* Scrolling marquee */}
-      <div className="flex-1 overflow-hidden">
-        <div className="flex items-center whitespace-nowrap animate-marquee no-select py-2.5">
+      {/* Draggable marquee */}
+      <div
+        className="flex-1 overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
+        <div ref={trackRef} className="flex items-center whitespace-nowrap py-2.5">
           {[...TOOLS, ...TOOLS].map((tool, i) => (
             <div
               key={i}
