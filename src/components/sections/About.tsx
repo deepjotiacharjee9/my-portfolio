@@ -85,8 +85,8 @@ export default function About() {
 
           <div className="space-y-4 text-[rgba(148,163,184,0.85)] leading-relaxed text-[15px]">
             <p>
-              I'm Deepjoti Acharjee — a video editor who spent five years in a
-              classroom before picking up a timeline.
+              I'm Deepjoti Acharjee — a teacher turned video editor. An editor
+              who spent five years in a classroom before picking up a timeline.
             </p>
             <p>
               Teaching did something to me that no editing course could. It
