@@ -19,10 +19,11 @@ interface Props {
 const CATEGORIES = ['Thumbnail', 'YouTube Frame', 'Banner', 'Title Card', 'End Screen', 'Overlay', 'Design']
 
 function parseDriveImageUrl(raw: string): string {
-  const match = raw.match(/\/file\/d\/([^/]+)/)
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`
-  const idMatch = raw.match(/[?&]id=([^&]+)/)
-  if (idMatch) return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`
+  // Extract file ID from Drive share links
+  const match = raw.match(/\/file\/d\/([^/?#]+)/)
+  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`
+  const idMatch = raw.match(/[?&]id=([^&#]+)/)
+  if (idMatch) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`
   return raw
 }
 
@@ -121,7 +122,7 @@ export default function FrameDesignFormModal({ initial, onSave, onClose }: Props
               placeholder="https://drive.google.com/file/d/FILE_ID/view"
             />
             <p className="text-[10px] text-[#2E2E2E] mt-1.5">
-              Google Drive share links are auto-converted to direct image URLs.
+              Drive links are auto-converted. <span className="text-[#C8A96E]/70">GIFs must be shared as "Anyone with the link" — Drive may still block animated GIFs; use a direct URL (Imgur, Cloudinary) for guaranteed animation.</span>
             </p>
           </div>
 

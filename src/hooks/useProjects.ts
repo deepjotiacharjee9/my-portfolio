@@ -72,12 +72,19 @@ export function useTestimonials() {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+function upgradeDriveImageUrl(url: string): string {
+  // Migrate old uc?export=view URLs to lh3 format which serves GIFs correctly
+  const m = url.match(/drive\.google\.com\/uc\?export=view&id=([^&]+)/)
+  if (m) return `https://lh3.googleusercontent.com/d/${m[1]}`
+  return url
+}
+
 function toFrameDesign(r: any): FrameDesign {
   return {
     id:          r.id,
     title:       r.title,
     description: r.description ?? undefined,
-    imageUrl:    r.image_url,
+    imageUrl:    upgradeDriveImageUrl(r.image_url),
     category:    r.category ?? 'Design',
   }
 }

@@ -56,7 +56,7 @@ export default function FrameDesigns() {
         onPointerUp={onPointerUp}
       >
         {/* Main display window */}
-        <div className="relative overflow-hidden bg-[#060E1A]" style={{ height: '80vh' }}>
+        <div className="relative overflow-hidden bg-[#060E1A]" style={{ height: '62vh' }}>
           <AnimatePresence custom={dir} mode="wait">
             <motion.img
               key={current.id}
