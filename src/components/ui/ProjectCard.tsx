@@ -12,7 +12,8 @@ function embedUrl(p: Project) {
   if (p.videoType === 'drive') {
     return `https://drive.google.com/file/d/${p.videoId}/preview`
   }
-  return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&modestbranding=1`
+  const origin = encodeURIComponent(window.location.origin)
+  return `https://www.youtube.com/embed/${p.videoId}?autoplay=1&rel=0&origin=${origin}`
 }
 
 function autoThumb(p: Project): string {
@@ -49,8 +50,9 @@ export default function ProjectCard({ project, index }: Props) {
             <iframe
               src={embedUrl(project)}
               className="w-full h-full"
-              allow="autoplay; fullscreen; picture-in-picture"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
               title={project.title}
             />
             <button
