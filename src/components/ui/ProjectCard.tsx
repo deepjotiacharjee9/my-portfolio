@@ -62,10 +62,10 @@ export default function ProjectCard({ project, index }: Props) {
                   src={`https://drive.google.com/file/d/${project.videoId}/preview`}
                   style={{
                     position: 'absolute',
-                    top: '-60px',
+                    top: '-80px',
                     left: 0,
                     width: '100%',
-                    height: 'calc(100% + 60px)',
+                    height: 'calc(100% + 80px)',
                     border: 'none',
                   }}
                   allow="autoplay; fullscreen; picture-in-picture"
