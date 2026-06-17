@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import ToolkitStrip from '../ui/ToolkitStrip'
-import StarBackground from '../ui/StarBackground'
 
 const container = {
   hidden: {},
@@ -18,13 +17,8 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-between pt-20 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-between pt-20"
     >
-      {/* ── Star Background ── */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <StarBackground />
-      </div>
-
       {/* ── Main content ── */}
       <div className="relative z-[2] flex-1 flex items-center px-6">
         <div className="max-w-5xl mx-auto w-full">
