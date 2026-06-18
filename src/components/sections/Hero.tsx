@@ -45,7 +45,7 @@ export default function Hero() {
               className="font-display font-extrabold leading-[0.88] tracking-tight uppercase"
               style={{ fontSize: 'clamp(3.8rem, 13vw, 12rem)' }}
             >
-              <span style={{ color: 'rgba(96,165,250,0.32)' }}>VIDEO</span>
+              <span style={{ color: 'rgba(96,165,250,0.32)' }}>DEEPJOTI</span>
               <br />
               <span style={{
                 backgroundImage: 'linear-gradient(135deg, #FFFFFF 15%, #BAE6FD 55%, #60A5FA 90%)',
@@ -53,7 +53,7 @@ export default function Hero() {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
               }}>
-                EDITOR.
+                ACHARJEE
               </span>
             </motion.h1>
 
